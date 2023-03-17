@@ -9,7 +9,7 @@ export default function NotFoundPage() {
         <h2>Oh dear. Are you lost?</h2>
       </div>
       <div className={styles.page__more}>
-        <Link to='/main'>Back To Main</Link>
+        <Link to='/'>Back To Main</Link>
         <Link to='/about'>
           <span>About Us</span>
         </Link>
