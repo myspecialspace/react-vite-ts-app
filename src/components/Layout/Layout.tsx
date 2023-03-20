@@ -1,13 +1,10 @@
-import { Outlet } from "react-router-dom";
-import Footer from "../Footer/Footer";
+import { Outlet } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 
 import styles from './Layout.module.scss';
-import Header from "../Header/Header";
-
-
+import Header from '../Header/Header';
 
 export default function Layout() {
-
   return (
     <div className={styles.layout}>
       <Header className={styles.header} />
@@ -16,5 +13,5 @@ export default function Layout() {
       </div>
       <Footer className={styles.footer} />
     </div>
-  )
+  );
 }

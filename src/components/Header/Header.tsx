@@ -9,11 +9,15 @@ interface HeaderProps {
 export default function Header(props: HeaderProps) {
   return (
     <div className={props.className}>
-        <div className={styles.header__wrapper}>
-          <NavLink to='/' className={styles.link}>MAIN</NavLink>
-          <Logo />
-          <NavLink to='/about' className={styles.link}>ABOUT</NavLink>
-        </div>
+      <div className={styles.header__wrapper}>
+        <NavLink to="/" className={styles.link}>
+          MAIN
+        </NavLink>
+        <Logo />
+        <NavLink to="/about" className={styles.link}>
+          ABOUT
+        </NavLink>
+      </div>
     </div>
   );
 }
