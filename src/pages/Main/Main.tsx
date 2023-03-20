@@ -1,3 +1,10 @@
+import SearchBar from '../../components/SearchBar/SearchBar';
+import styles from './Main.module.scss';
+
 export default function MainPage() {
-  return <h1>Hello World!</h1>;
+  return (
+    <div className={styles.root}>
+      <SearchBar />
+    </div>
+  );
 }
