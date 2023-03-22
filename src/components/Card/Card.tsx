@@ -5,7 +5,7 @@ import styles from './Card.module.scss';
 
 interface Props {
   data: Character;
-  className?: string;
+  className: string;
 }
 
 interface State {
@@ -23,7 +23,7 @@ class Card extends React.Component<Props, State> {
     super(props);
   }
 
-  getHogwartsRole(character: Character): HogwartsRole {
+  static getHogwartsRole(character: Character): HogwartsRole {
     if (character.hogwartsStaff) {
       return HogwartsRole.STAFF;
     }
@@ -36,7 +36,7 @@ class Card extends React.Component<Props, State> {
   }
 
   render() {
-    const data = this.props.data;
+    const { data } = this.props;
 
     const fields = [
       {
@@ -100,7 +100,7 @@ class Card extends React.Component<Props, State> {
       },
       {
         label: 'Hogwarts role',
-        value: this.getHogwartsRole(data),
+        value: Card.getHogwartsRole(data),
       },
       {
         label: 'Actor',

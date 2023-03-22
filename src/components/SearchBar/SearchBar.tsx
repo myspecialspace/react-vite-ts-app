@@ -1,8 +1,9 @@
 import React, { SyntheticEvent } from 'react';
+import classnames from 'classnames';
 import styles from './SearchBar.module.scss';
 
 interface Props {
-  className?: string;
+  className: string;
 }
 
 interface State {
@@ -19,14 +20,18 @@ class SearchBar extends React.Component<Props, State> {
     };
   }
 
+  componentWillUnmount() {
+    localStorage.setItem(this.SEARCH_KEY, this.state.value);
+  }
+
   onInput = (event: SyntheticEvent) => {
-    const value = (event.target as HTMLInputElement).value;
+    const { value } = event.target as HTMLInputElement;
     this.setState({ value });
   };
 
   render() {
     return (
-      <div className={styles.root}>
+      <div className={classnames(styles.root, this.props.className)}>
         <span className={styles.input}>
           <input
             type="text"
@@ -34,14 +39,10 @@ class SearchBar extends React.Component<Props, State> {
             defaultValue={this.state.value}
             onInput={this.onInput}
           />
-          <span></span>
+          <span />
         </span>
       </div>
     );
-  }
-
-  componentWillUnmount() {
-    localStorage.setItem(this.SEARCH_KEY, this.state.value);
   }
 }
 
