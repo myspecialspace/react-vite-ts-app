@@ -51,7 +51,6 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/destructuring-assignment': 'off',
-    // 'react/sort-comp': 'off',
   },
   settings: {
     react: {
