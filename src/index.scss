@@ -1,0 +1,53 @@
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 18px;
+  margin: 0;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+}
+
+h1 {
+  color: #fff;
+  margin-top: 0;
+}
+
+h2,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  background-size: cover;
+}
+
+button {
+  cursor: pointer;
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  @media screen and (max-width: 1200px) {
+    margin: 0 10px;
+  }
+}
+
+.active {
+  color: #61ddf0;
+  cursor: default;
+}
