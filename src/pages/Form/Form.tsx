@@ -4,7 +4,7 @@ export default function FormPage() {
   return (
     <div className={styles.form}>
       <div className={styles.form__title}>
-        <h1>Form Page</h1>
+        <h2>Form Page</h2>
         <p>Create your own form.</p>
       </div>
     </div>
