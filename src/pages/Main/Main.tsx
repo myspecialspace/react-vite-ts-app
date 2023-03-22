@@ -6,12 +6,12 @@ import Card from '../../components/Card/Card';
 export default function MainPage() {
   return (
     <div className={styles.root}>
-      <SearchBar />
+      <SearchBar className="search" />
 
       <ul className={styles.cards}>
         {characters.map((character) => (
           <li className={styles.card} key={character.id}>
-            <Card data={character} />
+            <Card data={character} className="card" />
           </li>
         ))}
       </ul>
