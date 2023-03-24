@@ -1,11 +1,14 @@
 import styles from './Form.module.scss';
+import Character from '../../components/Character/Character';
 
 export default function FormPage() {
   return (
     <div className={styles.form}>
       <div className={styles.form__title}>
-        <h2>Form Page</h2>
-        <p>Create your own form.</p>
+        <p>Create your own character</p>
+      </div>
+      <div className={styles.form__create}>
+        <Character />
       </div>
     </div>
   );
