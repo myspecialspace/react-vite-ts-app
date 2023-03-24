@@ -1,14 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/no-unused-prop-types */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/prefer-stateless-function */
 import classnames from 'classnames';
-import React, { Component } from 'react';
+import { Component } from 'react';
 import styles from './Character.module.scss';
 
 interface Props {
-  className?: string;
+  className: string;
 }
 
 interface State {
@@ -53,21 +48,22 @@ export default class Character extends Component<Props, State> {
 
   fileSelectedHandler = (event) => {
     this.setState({
-      selectedFile: event.target.files[0]
-    })
+      selectedFile: event.target.files[0],
+    });
     console.log(event.target.files[0]);
   };
 
   formSubmit = () => {};
 
   render(): JSX.Element {
-    const { fullName, yearsOld, dateOfBirth, gender, species, house, wizard, selectedFile } = this.state;
+    const { fullName, yearsOld, dateOfBirth, gender, species, house, wizard, selectedFile } =
+      this.state;
     return (
-      <div className={classnames(styles.root, this.props.className)}>
+      <div className={classnames(styles.character, this.props.className)}>
         <input
           type="text"
           name="fullName"
-          placeholder="character full name"
+          placeholder="Character full name"
           value={fullName}
           onChange={this.handleChange}
           onBlur={this.validateFullName}
@@ -86,22 +82,24 @@ export default class Character extends Component<Props, State> {
           value={dateOfBirth}
           onChange={this.handleChange}
         />
-        <input
-          type="radio"
-          name="gender"
-          value="male"
-          onChange={this.handleChange}
-          checked={gender === 'male'}
-        />
-        Male
-        <input
-          type="radio"
-          name="gender"
-          value="female"
-          onChange={this.handleChange}
-          checked={gender === 'female'}
-        />
-        Female
+        <div className={styles.gender}>
+          <input
+            type="radio"
+            name="gender"
+            value="male"
+            onChange={this.handleChange}
+            checked={gender === 'male'}
+          />
+          Male
+          <input
+            type="radio"
+            name="gender"
+            value="female"
+            onChange={this.handleChange}
+            checked={gender === 'female'}
+          />
+          Female
+        </div>
         <select name="species" value={species} onChange={this.handleChange}>
           <option value="" disabled>
             Species

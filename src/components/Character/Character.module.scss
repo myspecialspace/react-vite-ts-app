@@ -1,8 +1,48 @@
-.root {
+.character {
   display: flex;
   flex-direction: column;
   background-color: #ffffff73;
   border-radius: 6px;
   padding: 6px 8px;
   height: 100%;
+  gap: 6px;
+
+  & input {
+    height: 30px;
+  }
+
+  & select {
+    height: 25px;
+  }
+
+  & label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  & button {
+    padding: 8px 30px;
+    margin: 0;
+    border: none;
+    background: #61ddf0;
+    color: #172b4d;
+    font-size: 1em;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: all 0.8s ease 0s;
+    &:hover {
+      background: #fff;
+      color: #212121;
+    }
+  }
+
+}
+
+.gender {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
