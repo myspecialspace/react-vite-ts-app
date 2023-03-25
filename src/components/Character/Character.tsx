@@ -53,7 +53,22 @@ export default class Character extends Component<Props, State> {
     console.log(event.target.files[0]);
   };
 
-  formSubmit = () => {};
+  formSubmit = () => {
+    const isValidFullName = /^[a-z ,.'-]+$/.test(this.state.fullName);
+    const isValidCheckbox = this.state.wizard;
+
+    if (!isValidFullName) {
+      alert('Your name is not valid');
+    }
+    if (!isValidCheckbox) {
+      alert('Your should choose checkbox');
+    }
+    this.setState({
+      fullName: '',
+      wizard: false,
+    });
+    alert('Changes saved!');
+  };
 
   render(): JSX.Element {
     const { fullName, yearsOld, dateOfBirth, gender, species, house, wizard, selectedFile } =
