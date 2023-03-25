@@ -1,10 +1,10 @@
 import { describe, it } from 'vitest';
 import { render } from '@testing-library/react';
-import Form from './Form';
+import About from './About';
 
-describe('Form', () => {
+describe('About', () => {
   it('Renders!', () => {
-    const component = render(<Form />);
+    const component = render(<About />);
     expect(component.container).not.toBeEmptyDOMElement();
   });
 });

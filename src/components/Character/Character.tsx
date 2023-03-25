@@ -14,7 +14,7 @@ interface State {
   species: string;
   house: string;
   wizard: boolean;
-  selectedFile: null;
+  selectedFile: '';
 }
 
 export default class Character extends Component<Props, State> {
@@ -28,7 +28,7 @@ export default class Character extends Component<Props, State> {
       species: '',
       house: '',
       wizard: false,
-      selectedFile: null,
+      selectedFile: '',
     };
     // this.fullNameRef = React.createRef(); // change to name?
   }
@@ -51,7 +51,6 @@ export default class Character extends Component<Props, State> {
     this.setState({
       selectedFile: event.target.files[0],
     });
-    console.log(event.target.files[0]);
   };
 
   // componentDidMount(): void {
@@ -146,9 +145,10 @@ export default class Character extends Component<Props, State> {
           <option value="3">Hufflepuff</option>
           <option value="4">Ravenclaw</option>
         </select>
-        <label>
+        <label htmlFor="checkbox">
           <input
             type="checkbox"
+            id="checkbox"
             name="wizard"
             checked={wizard}
             onChange={this.handleCheckboxChange}

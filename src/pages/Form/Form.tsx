@@ -8,7 +8,7 @@ export default function FormPage() {
         <p>Create your own character</p>
       </div>
       <div className={styles.form__create}>
-        <Character />
+        <Character className="character" />
       </div>
     </div>
   );
