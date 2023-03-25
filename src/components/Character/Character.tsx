@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import styles from './Character.module.scss';
 
 interface Props {
@@ -30,6 +30,7 @@ export default class Character extends Component<Props, State> {
       wizard: false,
       selectedFile: null,
     };
+    // this.fullNameRef = React.createRef(); // change to name?
   }
 
   handleChange = (event) => {
@@ -52,6 +53,10 @@ export default class Character extends Component<Props, State> {
     });
     console.log(event.target.files[0]);
   };
+
+  // componentDidMount(): void {
+  //   this.fullNameRef.currrent.focus();
+  // }
 
   formSubmit = () => {
     const isValidFullName = /^[a-z ,.'-]+$/.test(this.state.fullName);
@@ -82,6 +87,7 @@ export default class Character extends Component<Props, State> {
           value={fullName}
           onChange={this.handleChange}
           onBlur={this.validateFullName}
+          // ref={this.fullNameRef}
         />
         <input
           type="text"
