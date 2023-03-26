@@ -51,6 +51,14 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/destructuring-assignment': 'off',
+    'jsx-a11y/label-has-associated-control': [
+      'error',
+      {
+        assert: 'either',
+      },
+    ],
+    'react/prefer-stateless-function': 'off',
+    'no-await-in-loop': 'off',
   },
   settings: {
     react: {
