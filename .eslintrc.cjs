@@ -59,6 +59,7 @@ module.exports = {
     ],
     'react/prefer-stateless-function': 'off',
     'no-await-in-loop': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
     react: {

@@ -13,7 +13,6 @@ export type FormObject = Array<{
   name: FormControlName;
   type: FormControlType;
   validators: ControlValidator[];
-  // value: string | boolean | number;
 }>;
 
 export enum FormControlType {

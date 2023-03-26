@@ -68,7 +68,7 @@ class CharacterForm extends Component<object, State> {
     return (
       <div className={styles.root}>
         <div className={styles.formWrap}>
-          {this.state.saved && <div className={styles.saved}>Изменения сохранены</div>}
+          {this.state.saved && <div className={styles.saved}>Changes saved</div>}
           <form className={styles.form} onSubmit={this.formSubmit} ref={this.formRef}>
             <input type="text" name="name" placeholder="Character full name" />
             {getControlError('name')}

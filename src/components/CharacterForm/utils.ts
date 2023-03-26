@@ -34,7 +34,7 @@ export const getFormValue = async (form: HTMLFormElement): Promise<Partial<Chara
         break;
 
       case FormControlType.DATE:
-        value = (controlElement as HTMLInputElement).valueAsDate?.toString() || ''; // TODO
+        value = (controlElement as HTMLInputElement).valueAsDate?.toString() || '';
         break;
 
       case FormControlType.SELECT:

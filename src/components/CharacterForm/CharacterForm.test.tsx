@@ -10,7 +10,7 @@ describe('CharacterForm', () => {
 
   it('Notification', () => {
     const component = render(<CharacterForm />);
-    expect(component.queryByText(/Изменения сохранены/i)).toBeNull();
+    expect(component.queryByText(/Changes saved/i)).toBeNull();
   });
 
   it('form controls render', () => {
@@ -22,13 +22,4 @@ describe('CharacterForm', () => {
     expect(screen.getByRole('option', { name: 'Gryffindor' })).toBeDefined();
     expect(screen.getByRole('button')).toBeDefined();
   });
-
-  // it('submit empty form has validation error', () => {
-  //   const component = render(<CharacterForm />);
-
-  //   const button = component.getByText(/submit/i);
-  //   fireEvent.click(button);
-
-  //   expect(screen.getByText(/Обязательное поле/)).toBeDefined();
-  // });
 });
