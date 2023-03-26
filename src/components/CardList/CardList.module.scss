@@ -1,0 +1,21 @@
+.cards {
+  display: flex;
+  flex-flow: wrap;
+  gap: 20px;
+  margin: 20px;
+  list-style-type: none;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
+}
+
+.card {
+  width: calc(25% - 20px);
+  height: 650px;
+  @media (max-width: 780px) {
+    width: calc(51% - 20px);
+  }
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+}
