@@ -1,5 +1,5 @@
 import styles from './Form.module.scss';
-import Character from '../../components/Character/Character';
+import Character from '../../components/CharacterForm/CharacterForm';
 
 export default function FormPage() {
   return (
@@ -8,7 +8,7 @@ export default function FormPage() {
         <p>Create your own character</p>
       </div>
       <div className={styles.form__create}>
-        <Character className="character" />
+        <Character />
       </div>
     </div>
   );

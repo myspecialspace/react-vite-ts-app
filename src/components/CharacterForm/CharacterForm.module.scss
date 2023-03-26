@@ -1,10 +1,20 @@
-.character {
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.formWrap {
+  width: 30%;
+  margin: 0 auto;
+}
+
+.form {
   display: flex;
   flex-direction: column;
   background-color: #ffffff73;
   border-radius: 6px;
   padding: 6px 8px;
-  height: 100%;
   gap: 6px;
 
   & input {
@@ -37,7 +47,6 @@
       color: #212121;
     }
   }
-
 }
 
 .gender {
@@ -45,4 +54,18 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+}
+
+.error {
+  font-size: 12px;
+  color: red;
+}
+
+.saved {
+  background-color: #ffffff73;
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: green;
+  margin-bottom: 10px;
+  text-align: center;
 }

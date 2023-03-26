@@ -1,13 +1,13 @@
 import { describe, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Character from './Character';
+import Character from './CharacterForm';
 // import characters from '../../helpers/data/potter.json';
 
 describe('Character', () => {
   // const data = characters[0];
 
   it('Renders!', () => {
-    const component = render(<Character className="character" />);
+    const component = render(<Character />);
     expect(component.container).not.toBeEmptyDOMElement();
   });
 
@@ -18,7 +18,7 @@ describe('Character', () => {
   // });
 
   it('some fields render', () => {
-    render(<Character className="character" />);
+    render(<Character />);
     expect(screen.getByText('Wizard')).toBeDefined();
   });
 });
