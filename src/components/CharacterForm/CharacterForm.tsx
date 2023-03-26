@@ -1,9 +1,9 @@
 import { Component, SyntheticEvent, createRef } from 'react';
 import { Character } from '../../types/character';
+import CardList from '../CardList/CardList';
 import styles from './CharacterForm.module.scss';
 import { FormControlName, FormErrors } from './types';
 import { fillDefault, getFormErrors, getFormValue, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
-import Card from '../Card/Card';
 
 interface State {
   characters: Character[];
@@ -119,13 +119,7 @@ class CharacterForm extends Component<object, State> {
           </form>
         </div>
 
-        <ul className={styles.cards}>
-          {this.props.characters.map((character) => (
-            <li className={styles.card} key={character.id}>
-              <Card data={character} className="card" />
-            </li>
-          ))}
-      </ul>
+        <CardList characters={this.state.characters} />
       </div>
     );
   }
