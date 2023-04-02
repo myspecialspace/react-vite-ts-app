@@ -6,7 +6,7 @@ interface Props {
   characters: Character[];
 }
 
-export default function CardList(props: Props) {
+export default function CardList(props: Props): JSX.Element {
   return (
     <ul className={styles.cards}>
       {props.characters.map((character) => (

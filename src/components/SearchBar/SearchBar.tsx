@@ -8,7 +8,7 @@ interface Props {
 
 const SEARCH_KEY = 'search';
 
-export default function SearchBar(props: Props) {
+export default function SearchBar(props: Props): JSX.Element {
   const [value, setValue] = useState(localStorage.getItem(SEARCH_KEY) || '');
 
   const onInput = (event: SyntheticEvent) => {
