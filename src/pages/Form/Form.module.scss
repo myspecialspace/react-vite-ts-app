@@ -1,12 +1,10 @@
 @import '../../index';
 
-.about {
+.form {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  text-align: center;
   padding: 20px;
-  align-items: center;
 
   &::after {
     content: '';
@@ -24,6 +22,8 @@
     padding: 25px;
     flex-direction: column;
     color: white;
+    text-align: center;
+
     & h2 {
       font-size: 3em;
       padding-top: 25px;
@@ -32,5 +32,8 @@
       font-size: 2em;
       padding-top: 25px;
     }
+  }
+  &__create {
+    display: flex;
   }
 }

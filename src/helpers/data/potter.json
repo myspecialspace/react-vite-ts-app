@@ -2,10 +2,7 @@
   {
     "id": "9e3f7ce4-b9a7-4244-b709-dae5c1f1d4a8",
     "name": "Harry Potter",
-    "alternate_names": [
-      "The Boy Who Lived",
-      "The Chosen One"
-    ],
+    "alternate_names": ["The Boy Who Lived", "The Chosen One"],
     "species": "human",
     "gender": "male",
     "house": "Gryffindor",
@@ -57,9 +54,7 @@
   {
     "id": "c3b1f9a5-b87b-48bf-b00d-95b093ea6390",
     "name": "Ron Weasley",
-    "alternate_names": [
-      "Dragomir Despard"
-    ],
+    "alternate_names": ["Dragomir Despard"],
     "species": "human",
     "gender": "male",
     "house": "Gryffindor",
@@ -189,9 +184,7 @@
   {
     "id": "3569d265-bd27-44d8-88e8-82fb0a848374",
     "name": "Severus Snape",
-    "alternate_names": [
-      "Half-Blood Prince"
-    ],
+    "alternate_names": ["Half-Blood Prince"],
     "species": "human",
     "gender": "male",
     "house": "Slytherin",
@@ -321,10 +314,7 @@
   {
     "id": "2cfd2d4b-5d1e-4dc5-8837-37a97c7e2f2f",
     "name": "Sirius Black",
-    "alternate_names": [
-      "Padfoot",
-      "Snuffles"
-    ],
+    "alternate_names": ["Padfoot", "Snuffles"],
     "species": "human",
     "gender": "male",
     "house": "Gryffindor",
@@ -343,21 +333,14 @@
     "hogwartsStudent": false,
     "hogwartsStaff": false,
     "actor": "Gary Oldman",
-    "alternate_actors": [
-      "James Walters",
-      "Rohan Gotobed"
-    ],
+    "alternate_actors": ["James Walters", "Rohan Gotobed"],
     "alive": false,
     "image": "https://ik.imagekit.io/hpapi/sirius.JPG"
   },
   {
     "id": "b8f9095b-9de6-4d7d-83e0-4391af8f22e4",
     "name": "Remus Lupin",
-    "alternate_names": [
-      "Professor Lupin",
-      "Moony",
-      "Remus John Lupin"
-    ],
+    "alternate_names": ["Professor Lupin", "Moony", "Remus John Lupin"],
     "species": "werewolf",
     "gender": "male",
     "house": "Gryffindor",
@@ -409,9 +392,7 @@
   {
     "id": "6afb1960-febd-418d-b604-e50c1b59459b",
     "name": "Bellatrix Lestrange",
-    "alternate_names": [
-      "Bella"
-    ],
+    "alternate_names": ["Bella"],
     "species": "human",
     "gender": "female",
     "house": "Slytherin",
@@ -437,9 +418,7 @@
   {
     "id": "efa802c8-ae18-4ae1-a524-49df21d05939",
     "name": "Lord Voldemort",
-    "alternate_names": [
-      "Tom Marvolo Riddle"
-    ],
+    "alternate_names": ["Tom Marvolo Riddle"],
     "species": "human",
     "gender": "male",
     "house": "Slytherin",
