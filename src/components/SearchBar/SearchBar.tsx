@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import styles from './SearchBar.module.scss';
 
@@ -6,44 +6,27 @@ interface Props {
   className: string;
 }
 
-interface State {
-  value: string;
-}
+const SEARCH_KEY = 'search';
 
-class SearchBar extends React.Component<Props, State> {
-  readonly SEARCH_KEY = 'search';
+export default function SearchBar(props: Props) {
+  const [value, setValue] = useState(localStorage.getItem(SEARCH_KEY) || '');
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      value: localStorage.getItem(this.SEARCH_KEY) || '',
-    };
-  }
-
-  componentWillUnmount() {
-    localStorage.setItem(this.SEARCH_KEY, this.state.value);
-  }
-
-  onInput = (event: SyntheticEvent) => {
-    const { value } = event.target as HTMLInputElement;
-    this.setState({ value });
+  const onInput = (event: SyntheticEvent) => {
+    setValue((event.target as HTMLInputElement).value);
   };
 
-  render() {
-    return (
-      <div className={classnames(styles.root, this.props.className)}>
-        <span className={styles.input}>
-          <input
-            type="text"
-            placeholder="Search"
-            defaultValue={this.state.value}
-            onInput={this.onInput}
-          />
-          <span />
-        </span>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    return () => {
+      localStorage.setItem(SEARCH_KEY, value);
+    };
+  });
 
-export default SearchBar;
+  return (
+    <div className={classnames(styles.root, props.className)}>
+      <span className={styles.input}>
+        <input type="text" placeholder="Search" defaultValue={value} onInput={onInput} />
+        <span />
+      </span>
+    </div>
+  );
+}
