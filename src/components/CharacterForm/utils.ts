@@ -1,4 +1,4 @@
-import { Character } from '../../types/character';
+import { Character, CharacterAttrs } from '../../types/character';
 import formObj from './form';
 import { FormControlValue, FormControlType, FormErrors, ControlValidatorError } from './types';
 
@@ -12,10 +12,10 @@ export const getBase64Image = (file: File): Promise<string> => {
   });
 };
 
-export const getFormValue = async (form: HTMLFormElement): Promise<Partial<Character>> => {
+export const getFormValue = async (form: HTMLFormElement): Promise<Partial<CharacterAttrs>> => {
   const formControls = form!.elements;
 
-  const acc: Partial<Character> = {};
+  const acc: Partial<CharacterAttrs> = {};
 
   for (let i = 0; i < formObj.length; i += 1) {
     const control = formObj[i];
@@ -29,12 +29,8 @@ export const getFormValue = async (form: HTMLFormElement): Promise<Partial<Chara
         value = (controlElement as HTMLInputElement).value;
         break;
 
-      case FormControlType.CHECKBOX:
-        value = (controlElement as HTMLInputElement).checked;
-        break;
-
       case FormControlType.DATE:
-        value = (controlElement as HTMLInputElement).valueAsDate?.toString() || '';
+        value = (controlElement as HTMLInputElement).value;
         break;
 
       case FormControlType.SELECT:
@@ -57,7 +53,7 @@ export const getFormValue = async (form: HTMLFormElement): Promise<Partial<Chara
   return acc;
 };
 
-export const getFormErrors = (formValue: Partial<Character>): FormErrors => {
+export const getFormErrors = (formValue: Partial<CharacterAttrs>): FormErrors => {
   return formObj.reduce((acc, control) => {
     const value = formValue[control.name];
 
@@ -78,39 +74,43 @@ export const getFormErrors = (formValue: Partial<Character>): FormErrors => {
   }, {} as FormErrors);
 };
 
-const DEFAULT_CHARACTER: Character = {
-  id: '',
+const DEFAULT_CHARACTER_ATTR: CharacterAttrs = {
+  slug: '',
   name: '',
-  alternate_names: [],
-  species: '',
+  born: '',
+  died: '',
   gender: '',
+  species: '',
+  height: '',
+  weight: '',
+  hair_color: '',
+  eye_color: '',
+  skin_color: '',
+  blood_status: '',
+  marital_status: '',
+  nationality: '',
+  animagus: '',
+  boggart: '',
   house: '',
-  dateOfBirth: '',
-  yearOfBirth: 1985,
-  wizard: false,
-  ancestry: '',
-  eyeColour: '',
-  hairColour: '',
-  wand: {
-    core: '',
-    length: null,
-    wood: '',
-  },
   patronus: '',
-  hogwartsStudent: false,
-  hogwartsStaff: false,
-  actor: '',
-  alternate_actors: [],
-  alive: true,
+  alias_names: [],
+  family_members: [],
+  jobs: [],
+  romances: [],
+  titles: [],
+  wands: [],
   image: '',
+  wiki: '',
 };
 
-export const fillDefault = (formValue: Partial<Character>): Character => {
+export const fillDefault = (formValue: Partial<CharacterAttrs>): Character => {
   return {
-    ...DEFAULT_CHARACTER,
-    ...formValue,
     id: `id-${Date.now()}`,
-    dateOfBirth: new Date(formValue.dateOfBirth!).toLocaleDateString(),
+    type: 'character',
+    attributes: {
+      ...DEFAULT_CHARACTER_ATTR,
+      ...formValue,
+    },
   };
 };
 

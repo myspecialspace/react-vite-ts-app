@@ -4,9 +4,6 @@ import styles from './Main.module.scss';
 import CardList from '../../components/CardList/CardList';
 import { Character } from '../../types/character';
 import Status from '../../types/status';
-import Modal from '../../components/Modal/Modal';
-import ModalCharacter from '../../components/ModalCharacter/ModalCharacter';
-import Loader from '../../components/Loader/Loader';
 import { getSearchItem } from '../../helpers/search';
 
 export default function MainPage() {
@@ -14,7 +11,6 @@ export default function MainPage() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [error, setError] = useState<string>('');
   const [status, setStatus] = useState<Status>(Status.INITIAL);
-  const [modalCharacter, setModalCharacter] = useState<Character | null>();
 
   useEffect(() => {
     const request = async () => {
@@ -59,12 +55,7 @@ export default function MainPage() {
       {isEmpty && (
         <div className={styles.empty}>Ничего не нашлось, попробуйте изменить параметры поиска.</div>
       )}
-      {isSuccess && (
-        <CardList characters={characters} onClick={(character) => setModalCharacter(character)} />
-      )}
-      <Modal isOpen={!!modalCharacter} onClose={() => setModalCharacter(null)}>
-        <ModalCharacter character={modalCharacter!} />
-      </Modal>
+      {isSuccess && <CardList characters={characters} />}
     </div>
   );
 }
