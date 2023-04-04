@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import { ControlValidator } from './types';
 
 export const required: ControlValidator = (value) => {
