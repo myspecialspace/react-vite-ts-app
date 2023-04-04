@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { render } from '@testing-library/react';
-import ModalCharacter from './ModalCharacter';
+import ModalCharacter from './CharacterModal';
 import characters from '../../mocks/characters';
 
 describe('ModalCharacter', () => {

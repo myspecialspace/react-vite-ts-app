@@ -1,6 +1,12 @@
 import { Character, CharacterAttrs } from '../../types/character';
 import formObj from './form';
-import { FormControlValue, FormControlType, FormErrors, ControlValidatorError } from './types';
+import {
+  FormControlValue,
+  FormControlType,
+  FormErrors,
+  ControlValidatorError,
+  FormValue,
+} from './types';
 
 export const getBase64Image = (file: File): Promise<string> => {
   return new Promise((resolve) => {
@@ -12,10 +18,10 @@ export const getBase64Image = (file: File): Promise<string> => {
   });
 };
 
-export const getFormValue = async (form: HTMLFormElement): Promise<Partial<CharacterAttrs>> => {
+export const getFormValue = async (form: HTMLFormElement): Promise<FormValue> => {
   const formControls = form!.elements;
 
-  const acc: Partial<CharacterAttrs> = {};
+  const acc: FormValue = {};
 
   for (let i = 0; i < formObj.length; i += 1) {
     const control = formObj[i];
