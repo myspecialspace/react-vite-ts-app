@@ -1,10 +1,10 @@
 import { describe, it } from 'vitest';
-import { render } from '@testing-library/react';
 import About from './About';
+import { customRender } from '../../test/utils';
 
 describe('About', () => {
   it('Renders!', () => {
-    const component = render(<About />);
+    const component = customRender(<About />);
     expect(component.container).not.toBeEmptyDOMElement();
   });
 });

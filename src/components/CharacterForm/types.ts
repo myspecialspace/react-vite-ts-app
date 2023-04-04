@@ -1,13 +1,14 @@
-import { Character } from '../../types/character';
+import { CharacterAttrs } from '../../types/character';
 
-export type FormControlValue = Character[FormControlName];
+export type FormValue = Partial<CharacterAttrs>;
+export type FormControlValue = CharacterAttrs[FormControlName];
 
-export type ControlValidator = (value: FormControlValue) => ControlValidatorError;
-export type ControlValidatorError = string;
+export type ControlValidator = (value?: string) => ControlValidatorError;
+export type ControlValidatorError = string | undefined;
 
 export type FormErrors = Record<FormControlName, ControlValidatorError[]>;
 
-export type FormControlName = keyof Character;
+export type FormControlName = keyof CharacterAttrs;
 
 export type FormObject = Array<{
   name: FormControlName;
@@ -20,7 +21,6 @@ export enum FormControlType {
   NUMBER = 'number',
   FILE = 'file',
   SELECT = 'select',
-  CHECKBOX = 'checkbox',
   RADIO = 'radio',
   DATE = 'date',
   IMAGE = 'image',

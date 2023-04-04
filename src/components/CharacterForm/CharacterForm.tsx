@@ -1,128 +1,195 @@
-import { Component, SyntheticEvent, createRef } from 'react';
-import { Character } from '../../types/character';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { SyntheticEvent, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../store';
+import { characterModalSelectors, formSelectors } from '../../store/selectors';
+import { characterModalActions } from '../../store/slices/character-modal';
+import { formActions } from '../../store/slices/form';
 import CardList from '../CardList/CardList';
+import Modal from '../Modal/Modal';
+import CharacterModal from '../CharacterModal/CharacterModal';
 import styles from './CharacterForm.module.scss';
-import { FormControlName, FormErrors } from './types';
-import { fillDefault, getFormErrors, getFormValue, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
+import { FormControlName, FormValue } from './types';
+import { getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
+import * as validators from './validators';
 
-interface State {
-  characters: Character[];
-  errors: FormErrors;
-  saved: boolean;
-}
+export default function CharacterForm(): JSX.Element {
+  const { characters, saved, formValue } = useSelector(formSelectors.self);
+  const characterModal = useSelector(characterModalSelectors.character);
+  const dispatch = useAppDispatch();
+  const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
+    defaultValues: formValue,
+  });
 
-class CharacterForm extends Component<object, State> {
-  formRef = createRef<HTMLFormElement>();
+  useEffect(() => {
+    register('image', {
+      validate: {
+        required: validators.required,
+      },
+    });
+  }, [register]);
 
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      characters: [],
-      errors: null!,
-      saved: false,
-    };
-  }
+  useEffect(() => {
+    const sub = watch((value) => {
+      dispatch(formActions.setValue(value as FormValue));
+    });
 
-  formSubmit = async (event: SyntheticEvent) => {
-    event.preventDefault();
+    return () => sub.unsubscribe();
+  }, [watch, dispatch]);
 
-    this.setState({ saved: false });
+  const formSubmit: SubmitHandler<FormValue> = async () => {
+    const hasErrors = Object.values(formState.errors).length;
 
-    const formValue = await getFormValue(this.formRef.current!);
-    const formErrors = getFormErrors(formValue);
-    this.setState({ errors: formErrors });
-
-    const hasOneError = Object.values(formErrors).some((errors) => errors.length > 0);
-
-    if (!hasOneError) {
-      const character = fillDefault(formValue);
-      this.setState((prevState) => ({
-        characters: [...prevState.characters, character],
-        saved: true,
-      }));
-
-      this.formRef.current?.reset();
-
-      setTimeout(() => {
-        this.setState({ saved: false });
-      }, 5000);
+    if (!hasErrors) {
+      dispatch(formActions.submit());
+      reset();
     }
   };
 
-  render(): JSX.Element {
-    const getControlError = (name: FormControlName): JSX.Element => {
-      const errors = this.state.errors?.[name];
-      if (!errors?.length) {
-        return null!;
-      }
+  useEffect(() => {
+    if (saved) {
+      setTimeout(() => {
+        dispatch(formActions.setSaved(false));
+      }, 5000);
+    }
+  }, [saved, dispatch]);
 
-      return (
-        <div className={styles.error}>
-          {errors.map((error) => (
-            <div key={error}>{error}</div>
-          ))}
-        </div>
-      );
-    };
+  const getControlError = (name: FormControlName): JSX.Element => {
+    const formError = formState.errors?.[name];
+    if (!formError) {
+      return null!;
+    }
 
     return (
-      <div className={styles.root}>
-        <div className={styles.formWrap}>
-          {this.state.saved && <div className={styles.saved}>Changes saved</div>}
-          <form className={styles.form} onSubmit={this.formSubmit} ref={this.formRef}>
-            <input type="text" name="name" placeholder="Character full name" />
-            {getControlError('name')}
-            <input type="date" name="dateOfBirth" placeholder="Date Of Birth" />
-            {getControlError('dateOfBirth')}
-            <div className={styles.gender}>
-              <label>
-                Male
-                <input type="radio" name="gender" value="male" />
-              </label>
-
-              <label htmlFor="gender-female">Female</label>
-              <input type="radio" name="gender" value="female" id="gender-female" />
-            </div>
-            {getControlError('gender')}
-
-            <select role="combobox" name="species" defaultValue="">
-              <option value="" disabled>
-                Species
-              </option>
-              {SPECIES_OPTIONS.map((value) => (
-                <option value={value} key={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-            {getControlError('species')}
-
-            <select name="house" defaultValue="">
-              <option value="" disabled>
-                House
-              </option>
-              {HOUSE_OPTIONS.map((value) => (
-                <option value={value} key={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-            {getControlError('house')}
-            <label>
-              <input type="checkbox" name="wizard" />
-              Wizard
-            </label>
-            {getControlError('wizard')}
-            <input type="file" name="image" />
-            {getControlError('image')}
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-
-        <CardList characters={this.state.characters} />
+      <div className={styles.error}>
+        <div key={formError.message}>{formError.message}</div>
       </div>
     );
-  }
-}
+  };
 
-export default CharacterForm;
+  const onFileChange = async (event: SyntheticEvent) => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    const url = file ? await getBase64Image(file) : '';
+    setValue('image', url);
+  };
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.formWrap}>
+        {saved && <div className={styles.saved}>Изменения сохранены</div>}
+        <form className={styles.form} onSubmit={handleSubmit(formSubmit)}>
+          <input
+            {...register('name', {
+              validate: {
+                required: validators.required,
+                minLength: validators.minLength(5),
+              },
+            })}
+            type="text"
+            placeholder="Character full name"
+          />
+          {getControlError('name')}
+          <input
+            {...register('born', {
+              validate: {
+                required: validators.required,
+                date: validators.date,
+              },
+            })}
+            type="date"
+            placeholder="Born"
+          />
+          {getControlError('born')}
+          <div className={styles.gender}>
+            <label>
+              Male
+              <input
+                {...register('gender', {
+                  validate: {
+                    required: validators.required,
+                  },
+                })}
+                value="male"
+                type="radio"
+              />
+            </label>
+
+            <label>
+              Female
+              <input
+                {...register('gender', {
+                  validate: {
+                    required: validators.required,
+                  },
+                })}
+                value="female"
+                type="radio"
+              />
+            </label>
+          </div>
+          {getControlError('gender')}
+
+          <select
+            {...register('species', {
+              validate: {
+                required: validators.required,
+              },
+            })}
+            role="combobox"
+          >
+            <option value="" disabled>
+              Species
+            </option>
+            {SPECIES_OPTIONS.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+          {getControlError('species')}
+
+          <select
+            {...register('house', {
+              validate: {
+                required: validators.required,
+              },
+            })}
+          >
+            <option value="" disabled>
+              House
+            </option>
+            {HOUSE_OPTIONS.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+          {getControlError('house')}
+          <input
+            {...register('animagus', {
+              validate: {
+                required: validators.required,
+              },
+            })}
+            type="text"
+            placeholder="Animagus"
+          />
+          {getControlError('animagus')}
+          <input type="file" onChange={onFileChange} />
+          {getControlError('image')}
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+      <CardList
+        characters={characters}
+        onClick={(character) => dispatch(characterModalActions.set(character))}
+      />
+
+      <Modal isOpen={!!characterModal} onClose={() => dispatch(characterModalActions.reset())}>
+        <CharacterModal character={characterModal!} />
+      </Modal>
+    </div>
+  );
+}
