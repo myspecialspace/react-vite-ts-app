@@ -1,5 +1,6 @@
 import { Character } from '../../types/character';
 
+export type FormValue = Partial<Character>;
 export type FormControlValue = Character[FormControlName];
 
 export type ControlValidator = (value: FormControlValue) => ControlValidatorError;

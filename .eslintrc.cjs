@@ -57,8 +57,19 @@ module.exports = {
         assert: 'either',
       },
     ],
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
     'react/prefer-stateless-function': 'off',
     'no-await-in-loop': 'off',
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state', 'acc'],
+      },
+    ],
+    'import/prefer-default-export': 'off',
+    'react/jsx-props-no-spreading': 'off',
     'import/no-extraneous-dependencies': 'off',
   },
   settings: {

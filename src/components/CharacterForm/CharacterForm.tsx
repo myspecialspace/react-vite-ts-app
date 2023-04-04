@@ -1,19 +1,43 @@
-import { SyntheticEvent, useRef, useState } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { SyntheticEvent, useRef, useState, useEffect } from 'react';
 import { Character } from '../../types/character';
 import CardList from '../CardList/CardList';
 import styles from './CharacterForm.module.scss';
-import { FormControlName, FormErrors } from './types';
-import { fillDefault, getFormErrors, getFormValue, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
+import { FormControlName, FormErrors, FormValue } from './types';
+import {
+  fillDefault,
+  getBase64Image,
+  getFormErrors,
+  getFormValue,
+  HOUSE_OPTIONS,
+  SPECIES_OPTIONS,
+} from './utils';
+import * as validators from './validators';
 
 export default function CharacterForm(): JSX.Element {
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [errors, setErrors] = useState<FormErrors>(null!);
-  const [saved, setSaved] = useState<boolean>(false);
-  const formRef = useRef<HTMLFormElement>(null);
+  // const [characters, setCharacters] = useState<Character[]>([]);
+  // const [errors, setErrors] = useState<FormErrors>(null!);
+  // const [saved, setSaved] = useState<boolean>(false);
+  // const formRef = useRef<HTMLFormElement>(null);
+  const { register, handleSubmit, setValue, errors } = useForm<FormValue>;
+  // useEffect(() => {
+  //   register('image', {
+  //     validate: {
+  //       required: validators.required,
+  //     },
+  //   });
+  // }, [register]);
 
-  const formSubmit = async (event: SyntheticEvent) => {
-    event.preventDefault();
+  // useEffect(() => {
+  //   const sub = watch((value) => {
+  //     dispatch(formActions.setValue(value as FormValue));
+  //   });
 
+  //   return () => sub.unsubscribe();
+  // }, [watch, dispatch]);
+
+  const formSubmit: SubmitHandler<FormValue> = async () => {
     setSaved(false);
 
     const formValue = await getFormValue(formRef.current!);
@@ -49,27 +73,80 @@ export default function CharacterForm(): JSX.Element {
     );
   };
 
+  const onFileChange = async (event: SyntheticEvent) => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    const url = file ? await getBase64Image(file) : '';
+    setValue('image', url);
+  };
   return (
     <div className={styles.root}>
       <div className={styles.formWrap}>
         {saved && <div className={styles.saved}>Changes saved</div>}
-        <form className={styles.form} onSubmit={formSubmit} ref={formRef}>
-          <input type="text" name="name" placeholder="Character full name" />
+        <form className={styles.form} onSubmit={handleSubmit(formSubmit)}>
+          <input
+            {...register('name', {
+              validate: {
+                required: validators.required,
+                minLength: validators.minLength(5),
+              },
+            })}
+            type="text"
+            placeholder="Character full name"
+          />
           {getControlError('name')}
-          <input type="date" name="dateOfBirth" placeholder="Date Of Birth" />
+          <input
+            {...register('dateOfBirth', {
+              validate: {
+                required: validators.required,
+                date: validators.date,
+              },
+            })}
+            type="date"
+            placeholder="dateOfBirth"
+          />
           {getControlError('dateOfBirth')}
+
           <div className={styles.gender}>
             <label>
               Male
-              <input type="radio" name="gender" value="male" />
+              <input
+                {...register('gender', {
+                  validate: {
+                    required: validators.required,
+                  },
+                })}
+                value="male"
+                type="radio"
+              />
             </label>
 
-            <label htmlFor="gender-female">Female</label>
-            <input type="radio" name="gender" value="female" id="gender-female" />
+            <label>
+              Female
+              <input
+                {...register('gender', {
+                  validate: {
+                    required: validators.required,
+                  },
+                })}
+                value="female"
+                type="radio"
+                id="gender-female"
+              />
+            </label>
           </div>
           {getControlError('gender')}
 
-          <select role="combobox" name="species" defaultValue="">
+          <select
+            {...register('species', {
+              validate: {
+                required: validators.required,
+              },
+            })}
+            role="combobox"
+            name="species"
+            defaultValue=""
+          >
             <option value="" disabled>
               Species
             </option>
@@ -81,7 +158,15 @@ export default function CharacterForm(): JSX.Element {
           </select>
           {getControlError('species')}
 
-          <select name="house" defaultValue="">
+          <select
+            {...register('house', {
+              validate: {
+                required: validators.required,
+              },
+            })}
+            name="house"
+            defaultValue=""
+          >
             <option value="" disabled>
               House
             </option>
@@ -93,11 +178,19 @@ export default function CharacterForm(): JSX.Element {
           </select>
           {getControlError('house')}
           <label>
-            <input type="checkbox" name="wizard" />
+            <input
+              {...register('wizard', {
+                validate: {
+                  required: validators.required,
+                },
+              })}
+              type="checkbox"
+              name="wizard"
+            />
             Wizard
           </label>
           {getControlError('wizard')}
-          <input type="file" name="image" />
+          <input type="file" name="image" onChange={onFileChange} />
           {getControlError('image')}
           <button type="submit">Submit</button>
         </form>
