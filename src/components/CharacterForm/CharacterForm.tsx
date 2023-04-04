@@ -20,22 +20,20 @@ export default function CharacterForm(): JSX.Element {
   // const [errors, setErrors] = useState<FormErrors>(null!);
   // const [saved, setSaved] = useState<boolean>(false);
   // const formRef = useRef<HTMLFormElement>(null);
-  const { register, handleSubmit, setValue, errors } = useForm<FormValue>;
-  // useEffect(() => {
-  //   register('image', {
-  //     validate: {
-  //       required: validators.required,
-  //     },
-  //   });
-  // }, [register]);
+  const { register, handleSubmit, setValue } = useForm<FormValue>;
+  useEffect(() => {
+    register('image', {
+      validate: {
+        required: validators.required,
+      },
+    });
+  }, [register]);
 
-  // useEffect(() => {
-  //   const sub = watch((value) => {
-  //     dispatch(formActions.setValue(value as FormValue));
-  //   });
+  useEffect(() => {
+    const sub = watch((value) => {
+     setValue(value as FormValue));
+    });
 
-  //   return () => sub.unsubscribe();
-  // }, [watch, dispatch]);
 
   const formSubmit: SubmitHandler<FormValue> = async () => {
     setSaved(false);
