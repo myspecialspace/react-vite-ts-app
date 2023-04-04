@@ -1,106 +1,92 @@
 import classnames from 'classnames';
 import { Character } from '../../types/character';
 import styles from './Card.module.scss';
-import { getHogwartsRole } from '../../helpers/hogwarts-role';
+import nophoto from '../../assets/img/nophoto.png';
 
 interface Props {
   data: Character;
   className: string;
+  onClick?: () => unknown;
 }
 
-export default function Card({ data, className }: Props): JSX.Element {
+function Card({ data, className, onClick }: Props): JSX.Element {
+  const attrs = data.attributes;
+
   const fields = [
     {
-      label: 'Years old',
-      value: data.yearOfBirth ? new Date().getFullYear() - data.yearOfBirth : null,
-    },
-    {
       label: 'Date of birth',
-      value: data.dateOfBirth,
+      value: attrs.born,
     },
     {
       label: 'Gender',
-      value: data.gender,
+      value: attrs.gender,
     },
     {
       label: 'Species',
-      value: data.species,
+      value: attrs.species,
     },
     {
       label: 'House',
-      value: data.house,
+      value: attrs.house,
     },
     {
-      label: 'Wizard',
-      value: data.wizard ? 'yes' : 'no',
+      label: 'Animagus',
+      value: attrs.animagus ? 'yes' : 'no',
     },
     {
-      label: 'Ancestry',
-      value: data.ancestry,
+      label: 'Blood status',
+      value: attrs.blood_status,
     },
     {
       label: 'Eye colour',
-      value: data.eyeColour,
-      valueClassNames: styles.eyeColour,
-      valueStyle: { backgroundColor: data.eyeColour },
+      value: attrs.eye_color,
     },
 
     {
-      label: 'Alternate names',
-      value: data.alternate_names.join(', '),
+      label: 'Alias names',
+      value: attrs.alias_names?.join(', '),
     },
 
     {
-      label: 'Wand wood',
-      value: data.wand.wood,
+      label: 'Wands',
+      value: attrs.wands?.join(', '),
       classNames: styles.separator,
-    },
-    {
-      label: 'Wand core',
-      value: data.wand.core,
-    },
-    {
-      label: 'Wand length',
-      value: data.wand.length,
     },
 
     {
       label: 'Patronus',
-      value: data.patronus,
+      value: attrs.patronus,
       classNames: styles.separator,
     },
     {
-      label: 'Hogwarts role',
-      value: getHogwartsRole(data),
-    },
-    {
-      label: 'Actor',
-      value: data.actor,
+      label: 'Nationality',
+      value: attrs.nationality,
     },
   ];
 
   return (
-    <div className={classnames(styles.root, className)}>
+    <div className={classnames(styles.root, className)} onClick={onClick}>
       <img
-        src={data.image}
-        alt={data.name}
+        src={attrs.image || nophoto}
+        alt={attrs.name || ''}
         loading="lazy"
-        className={classnames(styles.img, { [styles.blackWhite]: !data.alive })}
+        className={classnames(styles.img)}
       />
-      <h2 className={styles.name}>{data.name}</h2>
+      <h2 className={styles.name}>{attrs.name}</h2>
       <div className={styles.info}>
         {fields.map((field) => (
           <div className={classnames(styles.field, field.classNames)} key={field.label}>
             <div className={styles.label}>{field.label}: </div>
-            <div
-              className={classnames(styles.value, field.valueClassNames)}
-              style={field.valueStyle}
-            >
-              {field.value || '-'}
-            </div>
+            <div className={classnames(styles.value)}>{field.value || '-'}</div>
           </div>
         ))}
       </div>
     </div>
   );
 }
+
+Card.defaultProps = {
+  onClick: () => {},
+};
+
+export default Card;
