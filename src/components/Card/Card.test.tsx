@@ -1,10 +1,10 @@
 import { describe, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Card from './Card';
-import characters from '../../helpers/data/potter.json';
+import characters from '../../mocks/characters';
 
 describe('Card', () => {
-  const data = characters[0];
+  const data = characters.data[0];
 
   it('Renders!', () => {
     const component = render(<Card data={data} className="card" />);
@@ -26,8 +26,8 @@ describe('Card', () => {
   it('some fields render', () => {
     render(<Card data={data} className="card" />);
 
-    expect(screen.getByText('Years old:')).toBeDefined();
+    expect(screen.getByText('Date of birth:')).toBeDefined();
     expect(screen.getByText('Eye colour:')).toBeDefined();
-    expect(screen.getByText('Wand wood:')).toBeDefined();
+    expect(screen.getByText('Wands:')).toBeDefined();
   });
 });

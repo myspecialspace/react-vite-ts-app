@@ -10,12 +10,13 @@ describe('CharacterForm', () => {
 
   it('Notification', () => {
     const component = render(<CharacterForm />);
-    expect(component.queryByText(/Changes saved/i)).toBeNull();
+    expect(component.queryByText(/Изменения сохранены/i)).toBeNull();
   });
 
   it('form controls render', () => {
     render(<CharacterForm />);
-    expect(screen.getByRole('textbox', { name: '' })).toBeDefined();
+    expect(screen.getByPlaceholderText('Character full name')).toBeDefined();
+    expect(screen.getByPlaceholderText('Born')).toBeDefined();
     expect(screen.getByRole('radio', { name: 'Male' })).toBeDefined();
     expect(screen.getByRole('radio', { name: 'Female' })).toBeDefined();
     expect(screen.getByRole('option', { name: 'human' })).toBeDefined();

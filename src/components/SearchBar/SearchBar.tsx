@@ -1,30 +1,43 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import styles from './SearchBar.module.scss';
+import { getSearchItem, setSearchItem } from '../../helpers/search';
 
 interface Props {
   className: string;
+  onChange: (value: string) => unknown;
 }
 
-const SEARCH_KEY = 'search';
-
-export default function SearchBar(props: Props): JSX.Element {
-  const [value, setValue] = useState(localStorage.getItem(SEARCH_KEY) || '');
+export default function SearchBar({ className, onChange }: Props): JSX.Element {
+  const [value, setValue] = useState(getSearchItem());
 
   const onInput = (event: SyntheticEvent) => {
-    setValue((event.target as HTMLInputElement).value);
+    const val = (event.target as HTMLInputElement).value;
+    setValue(val);
+  };
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onChange(value);
+    }
   };
 
   useEffect(() => {
     return () => {
-      localStorage.setItem(SEARCH_KEY, value);
+      setSearchItem(value);
     };
   });
 
   return (
-    <div className={classnames(styles.root, props.className)}>
+    <div className={classnames(styles.root, className)}>
       <span className={styles.input}>
-        <input type="text" placeholder="Search" defaultValue={value} onInput={onInput} />
+        <input
+          type="text"
+          placeholder="Search"
+          defaultValue={value}
+          onInput={onInput}
+          onKeyDown={onKeyDown}
+        />
         <span />
       </span>
     </div>

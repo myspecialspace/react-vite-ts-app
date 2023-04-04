@@ -8,7 +8,7 @@ const formObj: FormObject = [
     validators: [validators.required, validators.minLength(5)],
   },
   {
-    name: 'dateOfBirth',
+    name: 'born',
     type: FormControlType.DATE,
     validators: [validators.required, validators.date],
   },
@@ -28,8 +28,8 @@ const formObj: FormObject = [
     validators: [validators.required],
   },
   {
-    name: 'wizard',
-    type: FormControlType.CHECKBOX,
+    name: 'animagus',
+    type: FormControlType.TEXT,
     validators: [validators.required],
   },
   {

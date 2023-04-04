@@ -1,6 +1,6 @@
 import styles from './About.module.scss';
 
-export default function AboutPage(): JSX.Element {
+export default function AboutPage() {
   return (
     <div className={styles.about}>
       <div className={styles.about__title}>
