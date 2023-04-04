@@ -1,5 +1,5 @@
 import { Character } from '../../types/character';
-import styles from './ModalCharacter.module.scss';
+import styles from './CharacterModal.module.scss';
 import nophoto from '../../assets/img/nophoto.png';
 import keys from '../../helpers/keys';
 
@@ -7,7 +7,7 @@ interface Props {
   character: Character;
 }
 
-export default function ModalCharacter({ character }: Props): JSX.Element {
+export default function CharacterModal({ character }: Props): JSX.Element {
   const attrs = character.attributes;
 
   const fields = keys(attrs)
