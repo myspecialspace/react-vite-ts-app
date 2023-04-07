@@ -1,9 +1,7 @@
-import { Nullable } from './nullable';
-
 export interface Character {
   id: string;
   type: string;
-  attributes: Nullable<CharacterAttrs>;
+  attributes: CharacterAttrs;
 }
 
 export interface CharacterAttrs {
