@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import styles from './Main.module.scss';
 import CardList from '../../components/CardList/CardList';
@@ -11,11 +10,10 @@ import { getStatus } from '../../helpers/status';
 export default function MainPage() {
   const { search, characters, error, status } = useSelector(mainSelectors.self);
   const characterModal = useSelector(characterModalSelectors.character);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchCharacters(search));
-  }, [search, dispatch]);
+    fetchCharacters(search);
+  }, [search]);
 
   const { isError, isLoading, isSuccess } = getStatus(status);
   const isEmpty = isSuccess && characters.length === 0;
@@ -31,10 +29,10 @@ export default function MainPage() {
       {isSuccess && (
         <CardList
           characters={characters}
-          onClick={(character) => dispatch(characterModalActions.set(character))}
+          onClick={(character) => characterModalActions.set(character)}
         />
       )}
-      <Modal isOpen={!!characterModal} onClose={() => dispatch(characterModalActions.reset())}>
+      <Modal isOpen={!!characterModal} onClose={() => characterModalActions.reset()}>
         <CharacterModal character={characterModal!} />
       </Modal>
     </div>

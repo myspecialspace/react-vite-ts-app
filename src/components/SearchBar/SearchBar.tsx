@@ -1,15 +1,13 @@
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import styles from './SearchBar.module.scss';
 
 export default function SearchBar(): JSX.Element {
-  const { search } = useSelector(mainSelectors.self);
-  const dispatch = useAppDispatch();
+  // const { search } = useSelector(mainSelectors.self);
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       const nextSearch = (event.target as HTMLInputElement).value;
-      dispatch(mainActions.setSearch(nextSearch));
+      mainActions.setSearch(nextSearch);
     }
   };
 
