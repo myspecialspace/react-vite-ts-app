@@ -1,10 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SyntheticEvent, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../store';
-import { characterModalSelectors, formSelectors } from '../../store/selectors';
-import { characterModalActions } from '../../store/slices/character-modal';
-import { formActions } from '../../store/slices/form';
 import CardList from '../CardList/CardList';
 import Modal from '../Modal/Modal';
 import CharacterModal from '../CharacterModal/CharacterModal';
@@ -16,7 +11,6 @@ import * as validators from './validators';
 export default function CharacterForm(): JSX.Element {
   const { characters, saved, formValue } = useSelector(formSelectors.self);
   const characterModal = useSelector(characterModalSelectors.character);
-  const dispatch = useAppDispatch();
   const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
     defaultValues: formValue,
   });
@@ -31,17 +25,17 @@ export default function CharacterForm(): JSX.Element {
 
   useEffect(() => {
     const sub = watch((value) => {
-      dispatch(formActions.setValue(value as FormValue));
+      formActions.setValue(value as FormValue);
     });
 
     return () => sub.unsubscribe();
-  }, [watch, dispatch]);
+  }, [watch]);
 
   const formSubmit: SubmitHandler<FormValue> = async () => {
     const hasErrors = Object.values(formState.errors).length;
 
     if (!hasErrors) {
-      dispatch(formActions.submit());
+      formActions.submit();
       reset();
     }
   };
@@ -49,10 +43,10 @@ export default function CharacterForm(): JSX.Element {
   useEffect(() => {
     if (saved) {
       setTimeout(() => {
-        dispatch(formActions.setSaved(false));
+        formActions.setSaved(false);
       }, 5000);
     }
-  }, [saved, dispatch]);
+  }, [saved]);
 
   const getControlError = (name: FormControlName): JSX.Element => {
     const formError = formState.errors?.[name];
@@ -184,10 +178,10 @@ export default function CharacterForm(): JSX.Element {
 
       <CardList
         characters={characters}
-        onClick={(character) => dispatch(characterModalActions.set(character))}
+        onClick={(character) => characterModalActions.set(character)}
       />
 
-      <Modal isOpen={!!characterModal} onClose={() => dispatch(characterModalActions.reset())}>
+      <Modal isOpen={!!characterModal} onClose={() => characterModalActions.reset()}>
         <CharacterModal character={characterModal!} />
       </Modal>
     </div>

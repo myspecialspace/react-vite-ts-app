@@ -6,11 +6,7 @@ import CardList from '../../components/CardList/CardList';
 import Modal from '../../components/Modal/Modal';
 import CharacterModal from '../../components/CharacterModal/CharacterModal';
 import Loader from '../../components/Loader/Loader';
-import { characterModalSelectors, mainSelectors } from '../../store/selectors';
-import { useAppDispatch } from '../../store';
-import { fetchCharacters } from '../../store/thunks/main';
 import { getStatus } from '../../helpers/status';
-import { characterModalActions } from '../../store/slices/character-modal';
 
 export default function MainPage() {
   const { search, characters, error, status } = useSelector(mainSelectors.self);

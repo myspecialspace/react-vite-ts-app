@@ -1,9 +1,6 @@
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import styles from './SearchBar.module.scss';
-import { useAppDispatch } from '../../store';
-import { mainActions } from '../../store/slices/main';
-import { mainSelectors } from '../../store/selectors';
 
 export default function SearchBar(): JSX.Element {
   const { search } = useSelector(mainSelectors.self);
