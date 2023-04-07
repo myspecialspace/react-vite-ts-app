@@ -1,16 +1,21 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { SyntheticEvent, useEffect } from 'react';
+import { SyntheticEvent, useEffect, SyntheticEvent, useState, useRef } from 'react';
 import CardList from '../CardList/CardList';
 import Modal from '../Modal/Modal';
 import CharacterModal from '../CharacterModal/CharacterModal';
 import styles from './CharacterForm.module.scss';
 import { FormControlName, FormValue } from './types';
-import { getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
+import { Character } from '../../types/character';
+import { fillDefault, getFormErrors, getFormValue, getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
 import * as validators from './validators';
 
 export default function CharacterForm(): JSX.Element {
-  const { characters, saved, formValue } = useSelector(formSelectors.self);
-  const characterModal = useSelector(characterModalSelectors.character);
+  // const { characters, saved, formValue } = useSelector(formSelectors.self);
+  // const characterModal = characterModalSelectors.character;
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [errors, setErrors] = useState<FormErrors>(null!);
+  const [saved, setSaved] = useState<boolean>(false);
+
   const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
     defaultValues: formValue,
   });
@@ -23,13 +28,13 @@ export default function CharacterForm(): JSX.Element {
     });
   }, [register]);
 
-  useEffect(() => {
-    const sub = watch((value) => {
-      formActions.setValue(value as FormValue);
-    });
+  // useEffect(() => {
+  //   const sub = watch((value) => {
+  //     setValue(value as FormValue);
+  //   });
 
-    return () => sub.unsubscribe();
-  }, [watch]);
+  //   return () => sub.unsubscribe();
+  // }, [watch]);
 
   const formSubmit: SubmitHandler<FormValue> = async () => {
     const hasErrors = Object.values(formState.errors).length;
@@ -43,7 +48,7 @@ export default function CharacterForm(): JSX.Element {
   useEffect(() => {
     if (saved) {
       setTimeout(() => {
-        formActions.setSaved(false);
+        setSaved(false);
       }, 5000);
     }
   }, [saved]);
