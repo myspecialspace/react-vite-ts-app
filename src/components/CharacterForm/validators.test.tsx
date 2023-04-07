@@ -8,12 +8,12 @@ describe('validators', () => {
   });
   it('required "example"', () => {
     const result = validators.required('example');
-    expect(result).toBeUndefined();
+    expect(result).toEqual('');
   });
 
   it('minLength 5 "example"', () => {
     const result = validators.minLength(5)('example');
-    expect(result).toBeUndefined();
+    expect(result).toEqual('');
   });
 
   it('minLength 5 "hi"', () => {
@@ -23,7 +23,7 @@ describe('validators', () => {
 
   it('date past', () => {
     const result = validators.date('Sun Mar 26 2023 19:05:06 GMT+0300 (Москва, стандартное время)');
-    expect(result).toBeUndefined();
+    expect(result).toEqual('');
   });
 
   it('date future', () => {

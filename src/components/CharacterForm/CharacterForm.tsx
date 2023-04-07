@@ -1,5 +1,5 @@
+import { SyntheticEvent, useState, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useEffect, SyntheticEvent, useState } from 'react';
 import CardList from '../CardList/CardList';
 import Modal from '../Modal/Modal';
 import CharacterModal from '../CharacterModal/CharacterModal';
@@ -19,7 +19,7 @@ export default function CharacterForm(): JSX.Element {
   const [characterModal, setCharacterModal] = useState<Character | null>();
 
   const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
-    defaultValues: formValue,
+    defaultValues: FormValue,
   });
 
   useEffect(() => {

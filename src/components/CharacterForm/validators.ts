@@ -4,6 +4,8 @@ export const required: ControlValidator = (value) => {
   if (value === '' || value == null) {
     return 'Обязательное поле';
   }
+
+  return ``;
 };
 
 export const minLength = (min: number): ControlValidator => {
@@ -11,6 +13,8 @@ export const minLength = (min: number): ControlValidator => {
     if (typeof value === 'string' && value.length < min) {
       return `Минимальная длина ${min} символов`;
     }
+
+    return ``;
   };
 };
 
@@ -22,4 +26,6 @@ export const date: ControlValidator = (value) => {
       return `Дата рождения должна быть в прошлом`;
     }
   }
+
+  return ``;
 };

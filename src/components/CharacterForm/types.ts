@@ -1,10 +1,10 @@
 import { CharacterAttrs } from '../../types/character';
 
-export type FormValue = Partial<CharacterAttrs>;
+// export type FormValue = Partial<CharacterAttrs>;
 export type FormControlValue = CharacterAttrs[FormControlName];
 
-export type ControlValidator = (value?: string) => ControlValidatorError;
-export type ControlValidatorError = string | undefined;
+export type ControlValidator = (value: FormControlValue) => ControlValidatorError;
+export type ControlValidatorError = string;
 
 export type FormErrors = Record<FormControlName, ControlValidatorError[]>;
 
