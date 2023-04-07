@@ -5,13 +5,13 @@ describe('utils', () => {
   it('getFormErrors has error', () => {
     const result = utils.getFormErrors({});
     expect(result).toEqual({
-      name: ['Обязательное поле'],
-      born: ['Обязательное поле'],
-      species: ['Обязательное поле'],
-      house: ['Обязательное поле'],
-      gender: ['Обязательное поле'],
-      animagus: ['Обязательное поле'],
-      image: ['Обязательное поле'],
+      name: ['Required field'],
+      born: ['Required field'],
+      species: ['Required field'],
+      house: ['Required field'],
+      gender: ['Required field'],
+      animagus: ['Required field'],
+      image: ['Required field'],
     });
   });
 

@@ -38,7 +38,7 @@ export default function MainPage() {
         if (err instanceof TypeError) {
           setError(err.message);
         } else {
-          setError('Произошла неизвестная ошибка');
+          setError('An unknown error has occurred');
         }
       }
     };
@@ -55,9 +55,9 @@ export default function MainPage() {
     <div className={styles.root}>
       <SearchBar className="search" onChange={(value) => setSearch(value)} />
       {isLoading && <Loader />}
-      {isError && <div className={styles.error}>Произошла ошибка: {error}</div>}
+      {isError && <div className={styles.error}>An error has occurred: {error}</div>}
       {isEmpty && (
-        <div className={styles.empty}>Ничего не нашлось, попробуйте изменить параметры поиска.</div>
+        <div className={styles.empty}>Nothing was found, try to change your search parameters.</div>
       )}
       {isSuccess && (
         <CardList characters={characters} onClick={(character) => setCharacterModal(character)} />

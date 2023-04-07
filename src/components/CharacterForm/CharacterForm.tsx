@@ -6,7 +6,7 @@ import CharacterModal from '../CharacterModal/CharacterModal';
 import styles from './CharacterForm.module.scss';
 import { FormControlName, FormValue } from './types';
 import { Character } from '../../types/character';
-import { getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
+import { fillDefault, getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
 import * as validators from './validators';
 
 export default function CharacterForm(): JSX.Element {
@@ -38,7 +38,9 @@ export default function CharacterForm(): JSX.Element {
     const hasErrors = Object.values(formState.errors).length;
 
     if (!hasErrors) {
-      submit();
+      const character = fillDefault(formValue);
+      setCharacters([...characters, character]);
+      setSaved(true);
       reset();
     }
   };
@@ -74,7 +76,7 @@ export default function CharacterForm(): JSX.Element {
   return (
     <div className={styles.root}>
       <div className={styles.formWrap}>
-        {saved && <div className={styles.saved}>Изменения сохранены</div>}
+        {saved && <div className={styles.saved}>Changes saved</div>}
         <form className={styles.form} onSubmit={handleSubmit(formSubmit)}>
           <input
             {...register('name', {

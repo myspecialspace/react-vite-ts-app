@@ -1,9 +1,6 @@
 .root {
   display: flex;
   height: 100%;
-  @media (max-width: 780px) {
-
-  }
   @media (max-width: 500px) {
     flex-direction: column;
   }

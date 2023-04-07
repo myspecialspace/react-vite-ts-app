@@ -10,7 +10,7 @@ describe('CharacterForm', () => {
 
   it('Notification', () => {
     const component = render(<CharacterForm />);
-    expect(component.queryByText(/Изменения сохранены/i)).toBeNull();
+    expect(component.queryByText(/Changes saved/i)).toBeNull();
   });
 
   it('form controls render', () => {
