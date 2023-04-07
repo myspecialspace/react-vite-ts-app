@@ -1,20 +1,22 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { SyntheticEvent, useEffect, SyntheticEvent, useState, useRef } from 'react';
+import { useEffect, SyntheticEvent, useState } from 'react';
 import CardList from '../CardList/CardList';
 import Modal from '../Modal/Modal';
 import CharacterModal from '../CharacterModal/CharacterModal';
 import styles from './CharacterForm.module.scss';
-import { FormControlName, FormValue } from './types';
+import { FormControlName, FormErrors, FormValue } from './types';
 import { Character } from '../../types/character';
-import { fillDefault, getFormErrors, getFormValue, getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
+import { getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
 import * as validators from './validators';
+import Status from '../../types/status';
 
 export default function CharacterForm(): JSX.Element {
   // const { characters, saved, formValue } = useSelector(formSelectors.self);
-  // const characterModal = characterModalSelectors.character;
   const [characters, setCharacters] = useState<Character[]>([]);
+  const [status, setStatus] = useState<Status.INITIAL>();
   const [errors, setErrors] = useState<FormErrors>(null!);
   const [saved, setSaved] = useState<boolean>(false);
+  const [characterModal, setCharacterModal] = useState<Character | null>();
 
   const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
     defaultValues: formValue,
@@ -28,15 +30,17 @@ export default function CharacterForm(): JSX.Element {
     });
   }, [register]);
 
-  // useEffect(() => {
-  //   const sub = watch((value) => {
-  //     setValue(value as FormValue);
-  //   });
+  useEffect(() => {
+    const sub = watch((value) => {
+      setValue(value as FormValue);
+    });
 
-  //   return () => sub.unsubscribe();
-  // }, [watch]);
+    return () => sub.unsubscribe();
+  }, [watch]);
 
   const formSubmit: SubmitHandler<FormValue> = async () => {
+    setSaved(false);
+    setStatus(Status.PENDING);
     const hasErrors = Object.values(formState.errors).length;
 
     if (!hasErrors) {
@@ -181,12 +185,9 @@ export default function CharacterForm(): JSX.Element {
         </form>
       </div>
 
-      <CardList
-        characters={characters}
-        onClick={(character) => characterModalActions.set(character)}
-      />
+      <CardList characters={characters} onClick={(character) => setCharacterModal(character)} />
 
-      <Modal isOpen={!!characterModal} onClose={() => characterModalActions.reset()}>
+      <Modal isOpen={!!characterModal} onClose={() => setCharacterModal(null)}>
         <CharacterModal character={characterModal!} />
       </Modal>
     </div>
