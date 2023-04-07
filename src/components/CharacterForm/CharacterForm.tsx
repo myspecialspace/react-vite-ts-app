@@ -4,22 +4,18 @@ import CardList from '../CardList/CardList';
 import Modal from '../Modal/Modal';
 import CharacterModal from '../CharacterModal/CharacterModal';
 import styles from './CharacterForm.module.scss';
-import { FormControlName, FormErrors, FormValue } from './types';
+import { FormControlName, FormValue } from './types';
 import { Character } from '../../types/character';
 import { getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
 import * as validators from './validators';
-import Status from '../../types/status';
 
 export default function CharacterForm(): JSX.Element {
-  // const { characters, saved, formValue } = useSelector(formSelectors.self);
   const [characters, setCharacters] = useState<Character[]>([]);
-  const [status, setStatus] = useState<Status.INITIAL>();
-  const [errors, setErrors] = useState<FormErrors>(null!);
   const [saved, setSaved] = useState<boolean>(false);
   const [characterModal, setCharacterModal] = useState<Character | null>();
 
   const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
-    defaultValues: FormValue,
+    defaultValues: formValue,
   });
 
   useEffect(() => {
@@ -36,15 +32,13 @@ export default function CharacterForm(): JSX.Element {
     });
 
     return () => sub.unsubscribe();
-  }, [watch]);
+  }, [watch, setValue]);
 
   const formSubmit: SubmitHandler<FormValue> = async () => {
-    setSaved(false);
-    setStatus(Status.PENDING);
     const hasErrors = Object.values(formState.errors).length;
 
     if (!hasErrors) {
-      formActions.submit();
+      submit();
       reset();
     }
   };
