@@ -24,14 +24,6 @@ export default function CharacterForm(): JSX.Element {
     });
   }, [register]);
 
-  // useEffect(() => {
-  //   const sub = watch((value) => {
-  //     setValue(value as FormValue);
-  //   });
-
-  //   return () => sub.unsubscribe();
-  // }, [watch, setValue]);
-
   const formSubmit: SubmitHandler<FormValue> = async () => {
     const hasErrors = Object.values(formState.errors).length;
     if (!hasErrors) {

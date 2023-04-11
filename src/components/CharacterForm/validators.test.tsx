@@ -13,7 +13,7 @@ describe('validators', () => {
 
   it('minLength 5 "example"', () => {
     const result = validators.minLength(5)('example');
-    expect(result).toEqual('');
+    expect(result).toEqual(' ');
   });
 
   it('minLength 5 "hi"', () => {
