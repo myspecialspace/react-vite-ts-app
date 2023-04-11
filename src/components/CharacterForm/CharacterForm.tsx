@@ -1,25 +1,20 @@
+import { SyntheticEvent, useState, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { SyntheticEvent, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../store';
-import { characterModalSelectors, formSelectors } from '../../store/selectors';
-import { characterModalActions } from '../../store/slices/character-modal';
-import { formActions } from '../../store/slices/form';
 import CardList from '../CardList/CardList';
 import Modal from '../Modal/Modal';
 import CharacterModal from '../CharacterModal/CharacterModal';
 import styles from './CharacterForm.module.scss';
 import { FormControlName, FormValue } from './types';
-import { getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
+import { Character } from '../../types/character';
+import { fillDefault, getBase64Image, HOUSE_OPTIONS, SPECIES_OPTIONS } from './utils';
 import * as validators from './validators';
 
 export default function CharacterForm(): JSX.Element {
-  const { characters, saved, formValue } = useSelector(formSelectors.self);
-  const characterModal = useSelector(characterModalSelectors.character);
-  const dispatch = useAppDispatch();
-  const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
-    defaultValues: formValue,
-  });
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [saved, setSaved] = useState<boolean>(false);
+  const [characterModal, setCharacterModal] = useState<Character | null>();
+
+  const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>();
 
   useEffect(() => {
     register('image', {
@@ -29,19 +24,12 @@ export default function CharacterForm(): JSX.Element {
     });
   }, [register]);
 
-  useEffect(() => {
-    const sub = watch((value) => {
-      dispatch(formActions.setValue(value as FormValue));
-    });
-
-    return () => sub.unsubscribe();
-  }, [watch, dispatch]);
-
   const formSubmit: SubmitHandler<FormValue> = async () => {
     const hasErrors = Object.values(formState.errors).length;
-
     if (!hasErrors) {
-      dispatch(formActions.submit());
+      const character = fillDefault(watch());
+      setCharacters([...characters, character]);
+      setSaved(true);
       reset();
     }
   };
@@ -49,10 +37,10 @@ export default function CharacterForm(): JSX.Element {
   useEffect(() => {
     if (saved) {
       setTimeout(() => {
-        dispatch(formActions.setSaved(false));
+        setSaved(false);
       }, 5000);
     }
-  }, [saved, dispatch]);
+  }, [saved]);
 
   const getControlError = (name: FormControlName): JSX.Element => {
     const formError = formState.errors?.[name];
@@ -77,7 +65,7 @@ export default function CharacterForm(): JSX.Element {
   return (
     <div className={styles.root}>
       <div className={styles.formWrap}>
-        {saved && <div className={styles.saved}>Изменения сохранены</div>}
+        {saved && <div className={styles.saved}>Changes saved</div>}
         <form className={styles.form} onSubmit={handleSubmit(formSubmit)}>
           <input
             {...register('name', {
@@ -182,12 +170,9 @@ export default function CharacterForm(): JSX.Element {
         </form>
       </div>
 
-      <CardList
-        characters={characters}
-        onClick={(character) => dispatch(characterModalActions.set(character))}
-      />
+      <CardList characters={characters} onClick={(character) => setCharacterModal(character)} />
 
-      <Modal isOpen={!!characterModal} onClose={() => dispatch(characterModalActions.reset())}>
+      <Modal isOpen={!!characterModal} onClose={() => setCharacterModal(null)}>
         <CharacterModal character={characterModal!} />
       </Modal>
     </div>

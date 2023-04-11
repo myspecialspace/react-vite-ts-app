@@ -1,15 +1,25 @@
 .root {
   display: flex;
   height: 100%;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 }
 
 .left {
   width: 40%;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 }
 
 .right {
   margin-left: 5%;
   width: 55%;
+  @media (max-width: 500px) {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 .img {

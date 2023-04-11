@@ -1,11 +1,9 @@
-import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MainPage from './pages/Main/Main';
 import NotFoundPage from './pages/NotFound/NotFound';
 import AboutPage from './pages/About/About';
 import Layout from './components/Layout/Layout';
 import FormPage from './pages/Form/Form';
-import { store } from './store';
 
 export function App() {
   return (
@@ -23,9 +21,7 @@ export function App() {
 export function WrappedApp() {
   return (
     <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
+      <App />
     </BrowserRouter>
   );
 }
