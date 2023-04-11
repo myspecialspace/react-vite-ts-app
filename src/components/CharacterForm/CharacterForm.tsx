@@ -14,9 +14,7 @@ export default function CharacterForm(): JSX.Element {
   const [saved, setSaved] = useState<boolean>(false);
   const [characterModal, setCharacterModal] = useState<Character | null>();
 
-  const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>({
-    defaultValues: formValue,
-  });
+  const { register, handleSubmit, reset, setValue, formState, watch } = useForm<FormValue>();
 
   useEffect(() => {
     register('image', {
@@ -26,19 +24,18 @@ export default function CharacterForm(): JSX.Element {
     });
   }, [register]);
 
-  useEffect(() => {
-    const sub = watch((value) => {
-      setValue(value as FormValue);
-    });
+  // useEffect(() => {
+  //   const sub = watch((value) => {
+  //     setValue(value as FormValue);
+  //   });
 
-    return () => sub.unsubscribe();
-  }, [watch, setValue]);
+  //   return () => sub.unsubscribe();
+  // }, [watch, setValue]);
 
   const formSubmit: SubmitHandler<FormValue> = async () => {
     const hasErrors = Object.values(formState.errors).length;
-
     if (!hasErrors) {
-      const character = fillDefault(formValue);
+      const character = fillDefault(watch());
       setCharacters([...characters, character]);
       setSaved(true);
       reset();
