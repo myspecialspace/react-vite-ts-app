@@ -1,8 +1,9 @@
 import { act } from 'react-dom/test-utils';
 import { describe, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import Main from './Main';
 import characters from '../../mocks/characters';
+import { customRender } from '../../test/utils';
 
 beforeAll(() => {
   vi.spyOn(window, 'fetch').mockResolvedValue({
@@ -18,14 +19,14 @@ afterAll(() => {
 
 describe('Main', () => {
   it('Renders!', () => {
-    const component = render(<Main />);
+    const component = customRender(<Main />);
 
     expect(component.container).not.toBeEmptyDOMElement();
   });
 
   it('List render', async () => {
     await act(() => {
-      render(<Main />);
+      customRender(<Main />);
     });
 
     expect(screen.getByRole('list')).toBeDefined();
