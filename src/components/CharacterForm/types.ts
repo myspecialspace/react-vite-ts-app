@@ -3,8 +3,8 @@ import { CharacterAttrs } from '../../types/character';
 export type FormValue = Partial<CharacterAttrs>;
 export type FormControlValue = CharacterAttrs[FormControlName];
 
-export type ControlValidator = (value?: string | string[] | undefined) => ControlValidatorError;
-export type ControlValidatorError = string | string[] | undefined;
+export type ControlValidator = (value?: string) => ControlValidatorError;
+export type ControlValidatorError = string | undefined;
 
 export type FormErrors = Record<FormControlName, ControlValidatorError[]>;
 
