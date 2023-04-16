@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import styles from './Main.module.scss';
 import CardList from '../../components/CardList/CardList';
@@ -17,34 +18,8 @@ export default function MainPage() {
   const [characterModal, setCharacterModal] = useState<Character | null>();
 
   useEffect(() => {
-    const request = async () => {
-      setError('');
-      setStatus(Status.PENDING);
-
-      try {
-        const res = await fetch(
-          `https://api.potterdb.com/v1/characters?filter[name_cont]=${search}`
-        );
-        if (res.ok) {
-          setStatus(Status.SUCCESS);
-          const json = await res.json();
-          setCharacters(json.data);
-        } else {
-          setStatus(Status.ERROR);
-          setError(await res.text());
-        }
-      } catch (err) {
-        setStatus(Status.ERROR);
-        if (err instanceof TypeError) {
-          setError(err.message);
-        } else {
-          setError('An unknown error has occurred');
-        }
-      }
-    };
-
-    request();
-  }, [search]);
+    dispatch(fetchCharacters(search));
+  }, [search, dispatch]);
 
   const isLoading = status === Status.PENDING;
   const isSuccess = status === Status.SUCCESS;
