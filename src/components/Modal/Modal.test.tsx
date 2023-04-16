@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import Modal from './Modal';
+import { customRender } from '../../test/utils';
 
 beforeEach(() => {
   const modal = document.createElement('div');
@@ -16,7 +17,7 @@ describe('Modal', () => {
   it('Renders!', () => {
     const message = 'Modal my test text';
 
-    render(
+    customRender(
       <Modal isOpen onClose={() => {}}>
         <div>{message}</div>
       </Modal>
@@ -28,7 +29,7 @@ describe('Modal', () => {
   it('isOpen = false', () => {
     const message = 'Modal my test text';
 
-    render(
+    customRender(
       <Modal isOpen={false} onClose={() => {}}>
         <div>{message}</div>
       </Modal>
