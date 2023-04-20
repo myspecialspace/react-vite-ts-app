@@ -1,20 +1,21 @@
 import { describe, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import CharacterForm from './CharacterForm';
+import { customRender } from '../../test/utils';
 
 describe('CharacterForm', () => {
   it('Renders!', () => {
-    const component = render(<CharacterForm />);
+    const component = customRender(<CharacterForm />);
     expect(component.container).not.toBeEmptyDOMElement();
   });
 
   it('Notification', () => {
-    const component = render(<CharacterForm />);
+    const component = customRender(<CharacterForm />);
     expect(component.queryByText(/Changes saved/i)).toBeNull();
   });
 
   it('form controls render', () => {
-    render(<CharacterForm />);
+    customRender(<CharacterForm />);
     expect(screen.getByPlaceholderText('Character full name')).toBeDefined();
     expect(screen.getByPlaceholderText('Born')).toBeDefined();
     expect(screen.getByRole('radio', { name: 'Male' })).toBeDefined();

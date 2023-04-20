@@ -7,6 +7,18 @@
 .formWrap {
   width: 30%;
   margin: 0 auto;
+  @media (max-width: 960px) {
+    width: 40%;
+  }
+  @media (max-width: 768px) {
+    width: 50%;
+  }
+  @media (max-width: 400px) {
+    width: 50%;
+  }
+  @media (max-width: 360px) {
+    width: 50%;
+  }
 }
 
 .form {
@@ -46,6 +58,12 @@
       background: #fff;
       color: #212121;
     }
+    @media (max-width: 500px) {
+      padding: 8px 17px;
+    }
+    @media (max-width: 400px) {
+      padding: 8px 7px;
+    }
   }
 }
 
@@ -54,6 +72,9 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 }
 
 .error {

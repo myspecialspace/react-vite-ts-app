@@ -1,43 +1,25 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import styles from './SearchBar.module.scss';
-import { getSearchItem, setSearchItem } from '../../helpers/search';
+import { useAppDispatch } from '../../store';
+import { mainActions } from '../../store/slices/main';
+import { mainSelectors } from '../../store/selectors';
 
-interface Props {
-  className: string;
-  onChange: (value: string) => unknown;
-}
-
-export default function SearchBar({ className, onChange }: Props): JSX.Element {
-  const [value, setValue] = useState(getSearchItem());
-
-  const onInput = (event: SyntheticEvent) => {
-    const val = (event.target as HTMLInputElement).value;
-    setValue(val);
-  };
+export default function SearchBar(): JSX.Element {
+  const { search } = useSelector(mainSelectors.self);
+  const dispatch = useAppDispatch();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      onChange(value);
+      const nextSearch = (event.target as HTMLInputElement).value;
+      dispatch(mainActions.setSearch(nextSearch));
     }
   };
 
-  useEffect(() => {
-    return () => {
-      setSearchItem(value);
-    };
-  });
-
   return (
-    <div className={classnames(styles.root, className)}>
+    <div className={classnames(styles.root)}>
       <span className={styles.input}>
-        <input
-          type="text"
-          placeholder="Search"
-          defaultValue={value}
-          onInput={onInput}
-          onKeyDown={onKeyDown}
-        />
+        <input type="text" placeholder="Search" defaultValue={search} onKeyDown={onKeyDown} />
         <span />
       </span>
     </div>
