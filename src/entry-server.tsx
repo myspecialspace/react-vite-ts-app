@@ -5,11 +5,11 @@ import { App } from './App';
 import { createStore } from './store/store';
 
 export function render(url: string) {
-  const APP_STATE = createStore();
+  const store = createStore();
   // TODO pipeablestream
   // TODO context
   const APP_HTML = ReactDOMServer.renderToString(
-    <Provider store={APP_STATE}>
+    <Provider store={store}>
       <StaticRouter location={url}>
         <App />
       </StaticRouter>
@@ -18,6 +18,6 @@ export function render(url: string) {
 
   return {
     APP_HTML,
-    APP_STATE,
+    APP_STATE: store.getState(),
   };
 }

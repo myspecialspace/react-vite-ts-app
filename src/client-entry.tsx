@@ -4,7 +4,9 @@ import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { App } from './App';
-import { store } from './store/index';
+import { createStore } from './store/store';
+
+const store = createStore(window.__INITIAL_STATE__);
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,
