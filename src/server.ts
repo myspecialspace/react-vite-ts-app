@@ -21,7 +21,7 @@ export async function createServer(
 
   const app = express();
 
-  let vite: ViteDevServer;
+  let vite: ViteDevServer = null!;
   if (!isProd) {
     vite = await (
       await import('vite')
