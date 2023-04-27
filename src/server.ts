@@ -1,12 +1,10 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable @typescript-eslint/naming-convention */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import { ViteDevServer } from 'vite';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DIRNAME = path.dirname(fileURLToPath(import.meta.url));
 
 const isTest = process.env.VITEST;
 
@@ -17,7 +15,7 @@ export async function createServer(
   isProd = process.env.NODE_ENV === 'production',
   hmrPort = 6655
 ) {
-  const resolve = (subpath: string) => path.resolve(__dirname, subpath);
+  const resolve = (subpath: string) => path.resolve(DIRNAME, subpath);
 
   const indexProd = isProd ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8') : '';
 
@@ -64,19 +62,11 @@ export async function createServer(
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
       } else {
         template = indexProd;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line import/extensions
-        render = (await import('./dist/server/entry-server.js')).render;
+        const entryServer = './dist/server/entry-server.js';
+        render = (await import(entryServer)).render;
       }
 
-      // const context: { url?: string } = {};
       const { APP_HTML, APP_STATE } = render(url);
-
-      // if (context.url) {
-      //   res.redirect(301, context.url);
-      //   return;
-      // }
 
       const html = template
         .replace(`<!--app-html-->`, APP_HTML)
@@ -96,8 +86,6 @@ export async function createServer(
       }
     }
   });
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   return { app, vite };
 }
 

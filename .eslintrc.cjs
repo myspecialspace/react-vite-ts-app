@@ -10,7 +10,14 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
   ],
-  overrides: [],
+  overrides: [
+    {
+      files: ['src/server.ts'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+  ],
   env: {
     browser: true,
     es6: true,
