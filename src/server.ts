@@ -70,15 +70,20 @@ export async function createServer(
         render = (await import('./dist/server/entry-server.js')).render;
       }
 
-      const context: { url?: string } = {};
-      const appHtml = render(url, context);
+      // const context: { url?: string } = {};
+      const { APP_HTML, APP_STATE } = render(url);
 
-      if (context.url) {
-        res.redirect(301, context.url);
-        return;
-      }
+      // if (context.url) {
+      //   res.redirect(301, context.url);
+      //   return;
+      // }
 
-      const html = template.replace(`<!--app-html-->`, appHtml);
+      const html = template
+        .replace(`<!--app-html-->`, APP_HTML)
+        .replace(
+          `<!--app-state-->`,
+          `<script>window.__INITIAL_STATE__ = ${JSON.stringify(APP_STATE)};</script>`
+        );
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (e) {
