@@ -8,7 +8,7 @@ const DIRNAME = path.dirname(fileURLToPath(import.meta.url));
 
 const isTest = process.env.VITEST;
 
-process.env.MY_CUSTOM_SECRET = 'API_KEY_qwertyuiop';
+// process.env.MY_CUSTOM_SECRET = 'API_KEY_qwertyuiop';
 
 export async function createServer(
   root = process.cwd(),
@@ -17,11 +17,12 @@ export async function createServer(
 ) {
   const resolve = (subpath: string) => path.resolve(DIRNAME, subpath);
 
-  const indexProd = isProd ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8') : '';
+  // const indexProd = isProd ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8') : '';
 
   const app = express();
 
   let vite: ViteDevServer = null!;
+
   if (!isProd) {
     vite = await (
       await import('vite')
@@ -54,28 +55,44 @@ export async function createServer(
     try {
       const url = req.originalUrl;
 
-      let template;
+      // let template;
       let render;
       if (!isProd) {
-        template = fs.readFileSync(resolve('index.html'), 'utf-8');
-        template = await vite.transformIndexHtml(url, template);
+        // template = fs.readFileSync(resolve('index.html'), 'utf-8');
+        // template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
       } else {
-        template = indexProd;
+        // template = indexProd;
         const entryServer = './dist/server/entry-server.js';
         render = (await import(entryServer)).render;
       }
 
-      const { APP_HTML, APP_STATE } = render(url);
+      res.setHeader('content-type', 'text/html');
 
-      const html = template
-        .replace(`<!--app-html-->`, APP_HTML)
-        .replace(
-          `<!--app-state-->`,
-          `<script>window.__INITIAL_STATE__ = ${JSON.stringify(APP_STATE)};</script>`
-        );
+      res.write(`<!DOCTYPE html>
+        <html lang="en">
 
-      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+        <head>
+          <meta charset="UTF-8" />
+          <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Vite + React + TS</title>
+        </head>
+
+        <body>
+        <div id="root">`);
+
+      const renderStream = render(url, {
+        onShellReady: () => {
+          renderStream.pipe(res).on('finish', () => {
+            res.end(`</div>
+              <div id="modal"></div>
+            </body>
+            </html>`);
+          });
+        },
+        bootstrapScripts: ['/entry-client.js'],
+      });
     } catch (e) {
       if (e instanceof Error) {
         if (!isProd) {
@@ -86,6 +103,7 @@ export async function createServer(
       }
     }
   });
+
   return { app, vite };
 }
 
