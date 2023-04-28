@@ -1,109 +1,58 @@
 import path from 'node:path';
-import { Writable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
+import { readFile } from 'node:fs/promises';
 import express from 'express';
-import { ViteDevServer } from 'vite';
+import { createServer, ViteDevServer } from 'vite';
 
 const DIRNAME = path.dirname(fileURLToPath(import.meta.url));
 
-const isTest = process.env.VITEST;
-
-export async function createServer(
-  root = process.cwd(),
-  isProd = process.env.NODE_ENV === 'production',
-  hmrPort = 6655
-) {
-  const resolve = (subpath: string) => path.resolve(DIRNAME, subpath);
-
+async function start(root = process.cwd(), hmrPort = 6655) {
   const app = express();
 
-  let vite: ViteDevServer = null!;
-
-  if (!isProd) {
-    vite = await (
-      await import('vite')
-    ).createServer({
-      root,
-      logLevel: isTest ? 'error' : 'info',
-      server: {
-        middlewareMode: true,
-        watch: {
-          usePolling: true,
-          interval: 100,
-        },
-        hmr: {
-          port: hmrPort,
-        },
+  const vite: ViteDevServer = await createServer({
+    root,
+    logLevel: 'info',
+    server: {
+      middlewareMode: true,
+      watch: {
+        usePolling: true,
+        interval: 100,
       },
-      appType: 'custom',
-    });
-    app.use(vite.middlewares);
-  } else {
-    app.use((await import('compression')).default());
-    app.use(
-      (await import('serve-static')).default(resolve('dist/client'), {
-        index: false,
-      })
-    );
-  }
+      hmr: {
+        port: hmrPort,
+      },
+    },
+    appType: 'custom',
+  });
+  app.use(vite.middlewares);
 
   app.use('*', async (req, res) => {
     try {
+      const htmlContent = await readFile(path.resolve(DIRNAME, 'index.html'), 'utf-8');
+
       const url = req.originalUrl;
 
-      let render;
-      if (!isProd) {
-        render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
-      } else {
-        const entryServer = './dist/server/entry-server.js';
-        render = (await import(entryServer)).render;
-      }
+      const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
+
+      const htmlFromVite = await vite.transformIndexHtml(url, htmlContent);
+      const htmlParts = htmlFromVite.split('<!--app-html-->');
 
       res.setHeader('content-type', 'text/html');
 
-      res.write(`<!DOCTYPE html>
-        <html lang="en">
-
-        <head>
-          <meta charset="UTF-8" />
-          <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Vite + React + TS</title>
-        </head>
-
-        <body>
-        <div id="root">`);
+      res.write(htmlParts[0]);
 
       const renderStream = render(url, {
         onShellReady: () => {
-          let renderData = '';
-
-          const writable = new Writable({
-            write: (chunk, encoding, done) => {
-              renderData += chunk;
-              done();
-            },
-          });
-
-          writable.on('finish', () => {
-            res.write(renderData);
-            res.end(
-              `</div>
-              <div id="modal"></div>
-            </body>
-            </html>`
-            );
-          });
-
-          renderStream.pipe(writable);
+          renderStream.pipe(res);
         },
-        bootstrapScripts: ['/entry-client.js'],
+        onAllReady: () => {
+          res.write(htmlParts[1]);
+          res.end();
+        },
       });
     } catch (e) {
       if (e instanceof Error) {
-        if (!isProd) {
-          vite.ssrFixStacktrace(e);
-        }
+        vite.ssrFixStacktrace(e);
         console.log(e.stack);
         res.status(500).end(e.stack);
       }
@@ -113,10 +62,8 @@ export async function createServer(
   return { app, vite };
 }
 
-if (!isTest) {
-  createServer().then(({ app }) =>
-    app.listen(5173, () => {
-      console.log('http://localhost:5173');
-    })
-  );
-}
+start().then(({ app }) =>
+  app.listen(5173, () => {
+    console.log(`http://localhost:5173`);
+  })
+);
