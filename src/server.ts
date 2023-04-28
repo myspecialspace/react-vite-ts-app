@@ -1,5 +1,5 @@
-import fs from 'node:fs';
 import path from 'node:path';
+import { Writable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import { ViteDevServer } from 'vite';
@@ -8,16 +8,12 @@ const DIRNAME = path.dirname(fileURLToPath(import.meta.url));
 
 const isTest = process.env.VITEST;
 
-// process.env.MY_CUSTOM_SECRET = 'API_KEY_qwertyuiop';
-
 export async function createServer(
   root = process.cwd(),
   isProd = process.env.NODE_ENV === 'production',
   hmrPort = 6655
 ) {
   const resolve = (subpath: string) => path.resolve(DIRNAME, subpath);
-
-  // const indexProd = isProd ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8') : '';
 
   const app = express();
 
@@ -55,14 +51,10 @@ export async function createServer(
     try {
       const url = req.originalUrl;
 
-      // let template;
       let render;
       if (!isProd) {
-        // template = fs.readFileSync(resolve('index.html'), 'utf-8');
-        // template = await vite.transformIndexHtml(url, template);
         render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
       } else {
-        // template = indexProd;
         const entryServer = './dist/server/entry-server.js';
         render = (await import(entryServer)).render;
       }
@@ -84,12 +76,26 @@ export async function createServer(
 
       const renderStream = render(url, {
         onShellReady: () => {
-          renderStream.pipe(res).on('finish', () => {
-            res.end(`</div>
+          let renderData = '';
+
+          const writable = new Writable({
+            write: (chunk, encoding, done) => {
+              renderData += chunk;
+              done();
+            },
+          });
+
+          writable.on('finish', () => {
+            res.write(renderData);
+            res.end(
+              `</div>
               <div id="modal"></div>
             </body>
-            </html>`);
+            </html>`
+            );
           });
+
+          renderStream.pipe(writable);
         },
         bootstrapScripts: ['/entry-client.js'],
       });
