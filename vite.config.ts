@@ -13,10 +13,13 @@ export default defineConfig({
       requireEnv: false,
     }),
   ],
-  root: 'src',
-  // test: {
-  //   globals: true,
-  //   environment: 'jsdom',
-  //   setupFiles: ['./src/setupTests.ts'],
-  // },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/setupTests.ts'],
+    coverage: {
+      provider: 'c8',
+      reporter: ['html'],
+    },
+  },
 });

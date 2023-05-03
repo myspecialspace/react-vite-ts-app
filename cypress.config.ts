@@ -1,26 +1,24 @@
-import { defineConfig } from "cypress";
+import { defineConfig } from 'cypress';
+import codeCoverageTask from '@cypress/code-coverage/task';
 
 export default defineConfig({
   env: {
     codeCoverage: {
-        exclude: "cypress/**/*.*",
+      exclude: 'cypress/**/*.*',
     },
   },
   e2e: {
     baseUrl: 'http://localhost:5173',
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      codeCoverageTask(on, config);
+      return config;
     },
   },
   component: {
     devServer: {
-      framework: "react",
-      bundler: "vite",
+      framework: 'react',
+      bundler: 'vite',
     },
-    setupNodeEvents(on, config) {
-      require("@cypress/code-coverage/task")(on, config);
-
-      return config;
   },
-  },
+  video: false,
 });

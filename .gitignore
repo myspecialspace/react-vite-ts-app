@@ -12,6 +12,7 @@ node_modules
 dist
 dist-ssr
 .nyc_output
+cypress/videos
 *.local
 
 # Editor directories and files

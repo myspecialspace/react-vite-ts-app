@@ -5,15 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node --esm --files src/server.ts",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
     "prettier": "npx prettier --write .",
     "lint": "eslint src --ext .ts,.tsx",
     "lint-fix": "eslint src --ext .ts,.tsx --fix",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "cypress:open": "cypress open",
-    "cypress:coverage": "npx nyc report --reporter=text-summary"
+    "cypress:coverage": "cypress run && open coverage/lcov-report/index.html"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
@@ -55,6 +53,7 @@
     "jsdom": "^21.1.1",
     "node-sass": "^8.0.0",
     "nyc": "^15.1.0",
+    "open": "^9.1.0",
     "prettier": "^2.8.4",
     "sass": "^1.59.3",
     "source-map-support": "^0.5.21",

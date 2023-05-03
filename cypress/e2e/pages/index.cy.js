@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe('pages', () => {
-  it('index', () => {
+  it('content', () => {
     cy.visit('/');
 
     cy.get('input[placeholder="Search"]').should('be.ok');
@@ -10,7 +10,7 @@ describe('pages', () => {
     cy.get('a[href="/about"]').should('be.ok');
   });
 
-  it('index header', () => {
+  it('header element', () => {
     cy.visit('/');
 
     cy.get('a[href="/"]').should('be.ok');
@@ -18,7 +18,7 @@ describe('pages', () => {
     cy.get('a[href="/about"]').should('be.ok');
   });
 
-  it('index footer', () => {
+  it('footer element', () => {
     cy.visit('/');
 
     cy.get('a[href="https://github.com/myspecialspace"]').should('be.ok');
@@ -26,25 +26,25 @@ describe('pages', () => {
     cy.get('a[href="https://rs.school/react/"]').should('be.ok');
   });
 
-  it('form', () => {
-    cy.visit('/form');
+  it('render list', () => {
+    cy.intercept('https://api.potterdb.com/v1/characters*').as('api.characters');
+    cy.visit('/');
+    cy.wait('@api.characters');
 
-    cy.get('form').should('be.ok');
-    cy.get('form input[name="name"]').should('be.ok');
-    cy.get('form input[type="date"]').should('be.ok');
-    cy.get('form input[type="radio"]').should('be.ok');
-    cy.get('form select[name="species"]').should('be.ok');
-    cy.get('form select[name="house"]').should('be.ok');
-    cy.get('form input[name="animagus"]').should('be.ok');
-    cy.get('form input[type="file"]').should('be.ok');
-    cy.get('form button[type="submit"]').should('be.ok');
-    cy.get('form').submit();
+    cy.get('ul li');
   });
 
-  it('about', () => {
-    cy.visit('/about');
+  it('character modal open and close', () => {
+    cy.intercept('https://api.potterdb.com/v1/characters*').as('api.characters');
+    cy.visit('/');
+    cy.wait('@api.characters');
 
-    cy.get('#root').should('contain.text', 'GET CLOSER TO THE MAGIC');
-    cy.get('#root').should('contain.text', 'Hogwarts School of Witchcraft and Wizardry is a school of magic for students aged eleven to eighteen.');
+    cy.get('ul li').first().click();
+
+    cy.get('#modal').should('not.be.empty');
+
+    cy.get('#modal button[data-test="close"]').click();
+
+    cy.get('#modal').should('be.be.empty');
   });
 });
