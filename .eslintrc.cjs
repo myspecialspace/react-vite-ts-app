@@ -10,7 +10,14 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
   ],
-  overrides: [],
+  overrides: [
+    {
+      files: ['src/server.ts'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+  ],
   env: {
     browser: true,
     es6: true,
@@ -72,6 +79,12 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'import/no-extraneous-dependencies': 'off',
     'consistent-return': 'off',
+    'no-underscore-dangle': [
+      'error',
+      {
+        allow: ['__INITIAL_STATE__', '__dirname'],
+      },
+    ],
   },
   settings: {
     react: {

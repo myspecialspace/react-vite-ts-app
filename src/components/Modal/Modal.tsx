@@ -16,7 +16,7 @@ export default function Modal({ children, isOpen, onClose }: Props): JSX.Element
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <button type="button" className={styles.closeButton} onClick={onClose}>
+          <button type="button" data-test="close" className={styles.closeButton} onClick={onClose}>
             &times;
           </button>
         </div>

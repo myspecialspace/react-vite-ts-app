@@ -1,15 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { formSlice } from './slices/form';
-import { mainSlice } from './slices/main';
-import { characterModalSlice } from './slices/character-modal';
+import { useDispatch } from 'react-redux';
+import { createStore } from './store';
 
-export const store = configureStore({
-  reducer: {
-    main: mainSlice.reducer,
-    form: formSlice.reducer,
-    characterModal: characterModalSlice.reducer,
-  },
-});
-
-export type AppState = ReturnType<(typeof store)['getState']>;
-export const useAppDispatch = () => store.dispatch as (typeof store)['dispatch'];
+type Store = ReturnType<typeof createStore>;
+export type AppState = ReturnType<Store['getState']>;
+export type AppDispatch = Store['dispatch'];
+export const useAppDispatch: () => AppDispatch = useDispatch;
