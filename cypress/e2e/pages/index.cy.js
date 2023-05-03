@@ -43,7 +43,9 @@ describe('pages', () => {
 
     cy.get('#modal').should('not.be.empty');
 
-    cy.get('#modal button[data-test="close"]').click();
+    cy.get('div button[type="button"]').should('be.ok');
+
+    cy.get('#modal button[type="button"]').click();
 
     cy.get('#modal').should('be.be.empty');
   });
